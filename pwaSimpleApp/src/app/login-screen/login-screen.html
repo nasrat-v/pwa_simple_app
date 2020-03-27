@@ -1,0 +1,38 @@
+<header>
+  <!--toolbar color="primary">-->
+    <title>
+      Welcome on AppHeraut !
+    </title>
+  <!--</toolbar>-->
+</header>
+
+<content>
+
+    <!--<h1 *ngIf="authFirebaseService.user | async">Welcome {{ (authFirebaseService.user | async)?.email }}!</h1>-->
+
+    <div class="centered">
+      <!--<card>
+        <card-header>
+          <card-title>Credentials</card-title>
+        </card-header>
+        <card-content>-->
+          <input type="text" [(ngModel)]="email" placeholder="Email"> 
+
+          <input type="password" [(ngModel)]="password" placeholder="Password">
+        <!--</card-content>
+        <card-content>-->
+          <button (click)="signup()" [disabled]="!email || !password">
+            <!--<icon slot="end" name="arrow-dropleft"></icon>-->
+            Signup
+          </button>
+
+          <button (click)="login()" [disabled]="!email || !password">
+            <!--<icon slot="start" name="arrow-dropright"></icon>-->
+            Login
+          </button>
+        <!--</card-content>
+      </card>-->
+
+    </div>
+    
+</content>

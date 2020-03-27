@@ -1,0 +1,109 @@
+<h1>Dictionary Search - {{title}}</h1>
+<div class='row'>
+  <div class='col-md-12'>
+    <form #dictionaryForm="ngForm" novalidate (ngSubmit)="getWords(dictionaryForm)">
+      <div class="form-group">
+        <label>Word</label>
+        <input type='text' class="form-control" required #headword="ngModel" [(ngModel)]='query.headword' name="headword" pattern="[a-zA-Z]+">
+        <div *ngIf="headword.errors && (headword.dirty || headword.touched)">
+          <p><small [hidden]="!headword.errors.required" class="form-text text-muted">Word is required</small></p>
+          <p><small [hidden]="!headword.invalid" class="form-text text-muted">Please enter a word</small></p>
+        </div>
+      </div>
+      <p *ngIf="advanced" (click)="advanced = !advanced"><i class="fa fa-chevron-up" aria-hidden="true"></i> Advanced Search</p>
+      <p *ngIf="!advanced" (click)="advanced = !advanced"><i class="fa fa-chevron-down" aria-hidden="true"></i> Advanced Search</p>
+      <div *ngIf="advanced">
+        <div class="form-group">
+          <label>Related Words</label>
+          <input type='text' class="form-control" #relatedwords="ngModel" [(ngModel)]='query.relatedwords' name="relatedwords" pattern="[a-zA-Z]+">
+          <div *ngIf="relatedwords.errors && (relatedwords.dirty || relatedwords.touched)">
+            <p><small [hidden]="!relatedwords.invalid" class="form-text text-muted">Please enter a related word</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Synonyms</label>
+          <input type='text' class="form-control" #synonyms="ngModel" [(ngModel)]='query.synonyms' name="synonyms" pattern="[a-zA-Z]+">
+          <div *ngIf="synonyms.errors && (synonyms.dirty || synonyms.touched)">
+            <p><small [hidden]="!synonyms.invalid" class="form-text text-muted">Please enter a synonym</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phrasel Verb</label>
+          <input type='text' class="form-control" #phrasalverb="ngModel" [(ngModel)]='query.phrasalverb' name="phrasalverb" pattern="[a-zA-Z]+">
+          <div *ngIf="phrasalverb.errors && (phrasalverb.dirty || phrasalverb.touched)">
+            <p><small [hidden]="!phrasalverb.invalid" class="form-text text-muted">Please enter a phrasal verb</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Parts of Speech</label>
+          <select class='form-control' #partsofspeech='ngModel' [(ngModel)]='query.partsofspeech' name='partsofspeech' pattern="[a-zA-Z]+">
+        <option [ngValue]="noun">Noun</option>
+        <option [ngValue]="verb">Verb</option>
+      </select>
+          <div *ngIf="partsofspeech.errors && (partsofspeech.dirty || partsofspeech.touched)">
+            <p><small [hidden]="!partsofspeech.invalid" class="form-text text-muted">Please select parts of speech</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Images</label>
+          <select class='form-control' #images='ngModel' [(ngModel)]='query.images' name='images' pattern="[a-zA-Z]+">
+        <option [ngValue]="picture">Picture</option>        
+      </select>
+          <div *ngIf="images.errors && (images.dirty || images.touched)">
+            <p><small [hidden]="!images.invalid" class="form-text text-muted">Please select image</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Audio</label>
+          <input type='text' class="form-control" #audio="ngModel" [(ngModel)]='query.audio' name="audio" pattern="[a-zA-Z]+">
+          <div *ngIf="audio.errors && (audio.dirty || audio.touched)">
+            <p><small [hidden]="!audio.invalid" class="form-text text-muted">Please enter audio type.</small></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Search</label>
+          <input type='text' class="form-control" #search="ngModel" [(ngModel)]='query.search' name="search" pattern="[a-zA-Z]+">
+          <div *ngIf="search.errors && (search.dirty || search.touched)">
+            <p><small [hidden]="!search.invalid" class="form-text text-muted">Please enter search term.</small></p>
+          </div>
+        </div>
+      </div>
+      <button class='btn btn-primary'>Search</button>
+    </form>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-12'>
+    <br>
+    <div *ngIf='results'>
+      <div *ngFor='let r of results' class='panel panel-default'>
+        <div class='panel-heading'>
+          <h3>{{r.headword}}</h3>
+        </div>
+        <div class='panel-body'>
+          <div class='col-md-12' *ngIf="r.part_of_speech">
+            <p><b>Parts of Speech:</b> {{r.part_of_speech}}</p>
+          </div>
+          <div class='col-md-12' *ngIf="r.pronunciations">
+            <p><b>Pronunciations</b></p>
+            <div *ngFor='let p of r.pronunciations' class='col-md-12'>
+              <span>IPA: {{p.ipa}} <span *ngIf="p.lang">({{p.lang}})</span></span>
+            </div>
+          </div>
+          <div *ngFor='let s of r.senses' class='col-md-12'>
+            <p *ngIf="s.definition"><b>Definition:</b> {{s.definition}}</p>            
+            <p *ngIf="s.translation"><b>Translation:</b> {{s.translation}}</p>  
+            <div *ngIf="s.translations">
+              <b>Translations:</b>
+              <div *ngFor='let tr of s.translations' class='col-md-12'>
+                <p *ngIf='tr.examples'>
+                  Examples: <span *ngFor='let ex of tr.examples'>{{ex}}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

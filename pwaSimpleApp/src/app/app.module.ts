@@ -1,25 +1,63 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
+import {  RouterModule, Routes, PreloadAllModules } from '@angular/router';
+//import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+//import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+//import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { AppComponent } from './app.component';
 
-import { NotificationService } from './services/notification.service';
+//import { AngularFireModule } from '@angular/fire';
+//import { AngularFireMessagingModule } from '@angular/fire/messaging';
+//import { AngularFireFunctionsModule } from '@angular/fire/functions';
+//import { environment } from '../environments/environment';
+//import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+//import { AngularFireAuthModule } from '@angular/fire/auth';
+//import { AuthFirebaseService } from './services/auth-firebase.service'
 
+import { LoginScreenModule } from './login-screen/login-screen.module'
+import { TabsPageModule } from './tabs/tabs.module';
+/*
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./login-screen/login-screen.module').then(m => m.LoginScreenModule)
+  },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+  }
+];
+*/
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
+  entryComponents: [],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    AppRoutingModule,
+    /*RouterModule.forRoot(
+      routes,
+      { preloadingStrategy: PreloadAllModules }
+    ),*/
+    BrowserModule, 
+    //IonicModule.forRoot(),
+    AppRoutingModule, 
     HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    //AngularFireModule.initializeApp(environment.firebase),
+    //AngularFirestoreModule,
+    //AngularFireAuthModule,
+    //AngularFireMessagingModule,
+    //AngularFireFunctionsModule,
+    TabsPageModule,
+    LoginScreenModule,
   ],
-  providers: [NotificationService],
+  exports: [RouterModule],
+  providers: [
+    //StatusBar,
+    //SplashScreen,
+    //AuthFirebaseService,
+    //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    //{ provide: FirestoreSettingsToken, useValue: {} }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

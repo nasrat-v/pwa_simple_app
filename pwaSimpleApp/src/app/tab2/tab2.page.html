@@ -1,0 +1,17 @@
+<header>
+  <!--<toolbar color="primary">-->
+    <title>
+      Current Location
+    </title>
+  <!--</toolbar>-->
+</header>
+
+<content>
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
+    <agm-marker
+      [latitude]="lat"
+      [longitude]="lng"
+      (markerClick)="onMarkerClick()"
+    ></agm-marker>
+  </agm-map>
+</content>

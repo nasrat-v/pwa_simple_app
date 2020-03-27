@@ -1,42 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { SwPush } from '@angular/service-worker';
-import { NotificationService } from './services/notification.service';
-import { environment } from 'src/environments/environment';
+import { Component } from '@angular/core';
+//import { Platform } from '@ionic/angular';
+//import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+//import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+//import { AuthFirebaseService } from './services/auth-firebase.service'
+import { Router } from '@angular/router';
+import { FcmService } from './services/fcm.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
+export class AppComponent {
 
-export class AppComponent implements OnInit {
+  email: string
+  password: string
 
-  constructor(readonly swPush: SwPush, public notifService: NotificationService) {
+  constructor(
+    //private platform: Platform,
+    //private splashScreen: SplashScreen,
+    //private statusBar: StatusBar,
+    //public authFirebaseService: AuthFirebaseService,
+    private fcm: FcmService
+  ) {
+    this.initializeApp();
   }
 
-  ngOnInit() {
-    this.subscribeToPush();
-  }
-
-  title = 'pwaSimpleApp';
-
-  private async subscribeToPush() {
-    if (this.swPush.isEnabled) {
-      this.swPush.requestSubscription({
-        serverPublicKey: environment.vapidKeys.publicKey
-      })
-      .then(sub => {
-        console.log(sub);
-        this.notifService.sendSubscriptionToServer(sub);
-      })
-      .catch(err => console.error('cannot subscribe: ' + err));
-    } else {
-      console.log('disabled');
-    }
-  }
-
-  public async getNotification() {
-    console.log('get notification');
-    this.notifService.getNotification();
+  initializeApp() {
+    //this.platform.ready().then(() => {
+      //this.statusBar.styleDefault();
+      //this.splashScreen.hide();
+      //this.fcm.showMessages().subscribe();
+    //});
   }
 }

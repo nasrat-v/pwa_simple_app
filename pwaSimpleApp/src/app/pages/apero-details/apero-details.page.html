@@ -1,0 +1,51 @@
+<header>
+      <title>Apero's details</title>
+  </header>
+   
+  <content padding>   
+    <!--<item>-->
+      <label position="stacked">Date</label>
+      <input type="date" [(ngModel)]="apero._date" placeholder="Select Date" max="2030">
+    <!--</item>-->
+
+    <!--<item>-->
+        <label position="stacked">Number of guests</label>
+        <input [(ngModel)]="apero._nb_slots">
+    <!--</item>-->
+
+    <!--<item>-->
+        <label position="stacked">Guests: </label>
+        <div *ngFor="let guest of apero._guests">
+          {{ guest }}
+        </div>
+    <!--</item>-->
+   
+  </content>
+   
+  <footer *ngIf="apero._id==undefined">
+    <!--<row no-padding text-center>-->
+        <!--<col size="12">-->
+        <button vertical="bottom" horizontal="end" fill="solid" color="primary" (click)="addApero()">
+          <!--<icon name="checkmark" slot="start"></icon>-->
+          Add Apero
+        </button>
+        <!--</col>-->
+    <!--</row>-->
+  </footer>
+   
+  <footer *ngIf="apero._id!==undefined">
+    <!--<row no-padding text-center>-->
+      <!--<col size="6">-->
+        <button fill="solid" color="danger" (click)="deleteApero()">
+          <!--<icon name="trash" slot="start"></icon>-->
+          Delete
+        </button>
+      <!--</col>-->
+      <!--<col size="6">-->
+        <button fill="solid" color="primary" (click)="updateApero()">
+          <!--<icon name="save" slot="start"></icon>-->
+          Update
+        </button>
+      <!--</col>-->
+    <!--</row>-->
+  </footer>
