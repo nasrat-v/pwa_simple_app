@@ -1,28 +1,171 @@
 var express = require('express');
 //var mysql = require('mysql');
 const app = express();
-
+const cors = require('cors');
 var redis = require('redis');
-var client = redis.createClient();  
+var client = redis.createClient(); 
+var bodyParser = require('body-parser')
+var methodOverride = require('method-override');
+
 
 client.on('connect', function() {
   console.log('connected');
 });
 
 
+app.use(cors());
+app.use(bodyParser.json())
+app.use(methodOverride());
 
+app.post('/addUser', (req, res) => {
 
-app.post('/postString', (req, res) => {
-  client.set('framework', 'Angular');
-  return res.send('Received  a string to store');
-});
+  client.hget('users:', req.body.email, function(err, reply) {
 
-app.get('/getString', (req, res) => {
-  client.get('framework', function(err, reply) {
-    console.log(reply);
-    return res.send(reply);
+    if (reply == null) {
+
+      client.incr("user:id:", function(err, id) {
+
+        client.hset('users:', req.body.email, id, function(err, reply) {
+          user = {
+            'id': id,
+            'email': req.body.email,
+            'password': req.body.password,
+            "aperos_id": id
+          }
+          client.hmset("user:" + id, user, function(err, reply) {
+
+            user.password = '';
+            return res.send(user);
+          });
+        });
+      });
+    } else {
+      return res.send({"error": "User already exists"});
+    }
   });
 });
+
+app.get('/getUser', (req, res) => {
+
+  client.hget("users:", req.query.email, function(err, id) {
+
+    client.hgetall("user:" + id, function(err, reply) {
+      if (reply == null) {
+        return res.send({"error": "User does not exist"});
+      } else {
+        if(req.query.password != reply.password) {
+          return res.send({"error": "Wrong password"});
+        } else {
+          reply.password = "";
+          return res.send(reply);
+        }
+      }
+    })
+  })
+});
+
+app.post("/addApero", (req, res) => {
+
+  client.incr("apero:id", function(err, id) {
+    newApero = {
+      "id": id,
+      "id_host": parseInt(req.body.id_host),
+      "host_email": req.body.host_email,
+      "lat": req.body.lat,
+      "lon": req.body.lon,
+      "address": req.body.address,
+      "nb_slots": req.body.nb_slots,
+      "guests_id": id,
+      "date": req.body.date
+    }
+    client.hmset("apero:" + id, newApero, function(err, reply) {
+      client.hgetall("user:" + req.body.id_host, function(err, reply) {
+        client.rpush("aperos_id:" + reply.aperos_id, id, function(err, reply) {
+          res.send(newApero);
+        })
+      }) 
+    })
+  });
+})
+
+app.get("/getAperos", (req, res) => {
+  aperos = [];
+  client.lrange("aperos_id:" + req.query.aperos_id, 0, -1, async function(err, reply) {
+      for (key in reply) {
+        let promise = new Promise((resolve, reject) => {
+          client.hgetall("apero:" + reply[key], function(err, reply) {
+            resolve(reply);
+          })
+      })
+      let apero = await promise;
+      aperos.push(apero);
+    }
+  res.send(aperos);
+  })
+})
+
+app.get("/getApero", (req, res) => {
+  client.hgetall("apero:" + req.query.apero_id, function(err, reply) {
+    return res.send(reply);
+  })
+})
+
+app.put("/updateApero", (req, res) => {
+
+  newApero = {
+    "id": parseInt(req.body.id),
+    "id_host": parseInt(req.body.id_host),
+    "host_email": req.body.host_email,
+    "lat": req.body.lat,
+    "lon": req.body.lon,
+    "address": req.body.address,
+    "nb_slots": req.body.nb_slots,
+    "guests_id": parseInt(req.body.guests_id),
+    "date": req.body.date
+  }
+  client.hmset("apero:" + req.body.id, newApero, function(err, reply) {
+    return res.send(newApero);
+  })
+})
+
+app.delete("/deleteApero", (req, res) => {
+  client.hgetall("apero:" + req.query.apero_id, function(err, apero) {
+    client.hgetall("user:" + apero.id_host, function(err, user) {
+      client.lrange("guests_id:" + apero.guests_id, 0, -1, function(err, reply) {
+        for (key in reply) {
+          client.lrem("aperos_id:" + reply[key], 0, req.query.apero_id);
+        }
+        client.del("guests_id:" + req.query.apero_id);
+      })
+      client.lrem("aperos_id:" + user.aperos_id, 0, req.query.apero_id, function(err, reply) {
+        client.del("apero:" + req.query.apero_id, function(err, reply) {
+          return res.send({"response": "OK"});
+        })
+      })
+    })  
+  })  
+})
+
+app.put("/joinApero", (req, res) => {
+
+  client.rpush("guests_id:" + req.body.guests_id, req.query.user_id, function(err,rely) { 
+    client.hgetall("user:" + req.query.user_id, function(err, user) {
+      client.rpush("aperos_id:" + user.aperos_id, req.body.id, function(err, reply) {
+        return res.send({"response": "OK"});
+      })
+    })
+  })
+})
+
+
+
+
+
+
+
+
+
+
 
 app.delete('/deleteString', (req, res) => {
   client.del('framework', function(err, reply) {

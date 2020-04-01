@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { AperoService, Apero } from 'src/app/services/apero.service';
+import { UserService } from 'src/app/services/user.service';
 //import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
 //import { FcmService } from 'src/app/services/fcm.service';
 
@@ -15,15 +16,14 @@ export class AperoListPage implements OnInit {
 
   constructor(
     private aperoService: AperoService,
+    private userService: UserService,
     //public authFirebaseService: AuthFirebaseService,
     //public fcm: FcmService
     ) { 
-      console.log("couocu");
   }
 
-  ngOnInit() {
-    this.aperos = this.aperoService.getAperos();
-    console.log(this.aperos);
+  async ngOnInit() {
+    this.aperos = await this.aperoService.getAperos();
   }
 
   //fonction à utiliser grace aux notification push

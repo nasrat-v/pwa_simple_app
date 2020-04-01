@@ -3,18 +3,21 @@ import { Injectable } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthFirebaseService } from './auth-firebase.service';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from './user.service';
+import { response } from 'express';
+
 
 export interface Apero {
-  _id?: number
-  _id_host:  number
-  _user_name_host: string,
-  _lon:             number,
-  _lat:             number,
-  _address:          string,
-  _nb_slots:         number,
-  _guests:          string[],
-  _nb_guests:       number,
-  _date:            Date;
+  id?: number
+  id_host:  number
+  host_email: string,
+  lat:             number,
+  lon:             number,
+  address:          string,
+  nb_slots:         number,
+  guests:          string[],
+  date:            Date;
 }
 
 @Injectable({
@@ -23,13 +26,18 @@ export interface Apero {
 export class AperoService {
   private aperos: Apero[];
   //private aperoCollection: AngularFirestoreCollection<Apero>;
-  private aperosHost:  Observable<Apero[]>;
+  //private aperosHost:  Observable<Apero[]>;
   //private AperosCollectionHost: AngularFirestoreCollection<Apero>;
 
   constructor(
+    private http: HttpClient,
+    private userService: UserService,
+
+    
             //public authFirebaseService: AuthFirebaseService,
             //private afs: AngularFirestore
             ) {
+
 
                 
     /*this.aperoCollection = this.afs.collection<Apero>(
@@ -48,25 +56,30 @@ export class AperoService {
 
    }
 
-   getAperos() {
-     this.aperos = [
-      {_id: 0,
-      _id_host:  1,
-      _user_name_host: "L'apero chez toto toto",
-      _lon:             42,
-      _lat:             24,
-      _address:          "25 rue du coq, 13001 Marseille",
-      _nb_slots:         10,
-      _guests:          ["titi", "tata"],
-      _nb_guests:       2,
-      _date:            new Date()
-    }
-
-  ];
-    return this.aperos;
+   getAperos():Promise<Apero[]> {
+    return new Promise((resolve, reject) => {
+      this.http.get<Apero[]>("http://127.0.0.1:3000/getAperos?aperos_id=" + this.userService.getUser().aperos_id).toPromise().then(
+        aperos => {
+          this.aperos = aperos;
+          resolve(aperos);
+        },
+        err => {
+          reject(err.error);
+        });
+    });
   }
 
-  getApero(id: string) /*: Observable<Apero> */{
+  getApero(apero_id: string) : Promise<Apero> {
+    return new Promise((resolve, reject) => {
+      this.http.get<Apero>("http://127.0.0.1:3000/getApero?apero_id=" + apero_id).toPromise().then(
+        apero => {
+          //this.aperos = aperos;
+          resolve(apero);
+        },
+        err => {
+          reject(err.error);
+        });
+    });
     /*return this.aperoCollection.doc<Apero>(id).valueChanges().pipe(
       take(1),
       map(apero => {
@@ -76,8 +89,9 @@ export class AperoService {
     );*/
   }
 
-  getAperosHost(): Observable<Apero[]> {
-    return this.aperosHost;
+  getAperosHost()/*: Observable<Apero[]> */
+  {
+    //return this.aperosHost;
   }
 
   getAperoHost(id: string): Observable<Apero> {
@@ -90,11 +104,20 @@ export class AperoService {
     );*/
   }
 
-  addApero(apero: Apero) /*: Promise<DocumentReference> */ {
-    return ;//this.aperoCollection.add(apero);
+  addApero(newApero: Apero) /*: Promise<DocumentReference> */ {
+    return new Promise((resolve, reject) =>{
+      this.http.post<Apero>("http://127.0.0.1:3000/addApero", newApero).toPromise().then(
+        apero => {
+          resolve(apero);
+        },
+        err => {
+          reject(err.error);
+        }
+      )
+    });
   }
 
-  updateApero(apero: Apero) /*: Promise<void>*/ {
+  updateApero(newApero: Apero) /*: Promise<void>*/ {
     /*return this.aperoCollection.doc(apero._id).update({ 
       _id_host: apero._id_host, 
       _user_name_host: apero._user_name_host,
@@ -105,6 +128,16 @@ export class AperoService {
       _date: apero._date
 
     });*/
+    return new Promise((resolve, reject) =>{
+      this.http.put<Apero>("http://127.0.0.1:3000/updateApero", newApero).toPromise().then(
+        apero => {
+          resolve(apero);
+        },
+        err => {
+          reject(err.error);
+        }
+      )
+    });
   }
 
   joinApero(user_id: string, id: string) {
@@ -143,7 +176,18 @@ export class AperoService {
     });*/
   }
  
-  deleteApero(id: string) /*: Promise<void> */{
+  deleteApero(apero: Apero) /*: Promise<void> */{
+    return new Promise((resolve, reject) =>{
+      this.http.delete("http://127.0.0.1:3000/deleteApero?apero_id=" + apero.id).toPromise().then(
+        response => {
+          resolve(response);
+        },
+        err => {
+          reject(err.error);
+        }
+      )
+    });
+
     //return this.aperoCollection.doc(id).delete();
   }
 }

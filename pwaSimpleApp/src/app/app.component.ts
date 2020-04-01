@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 //import { Platform } from '@ionic/angular';
 //import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 //import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
 //import { AuthFirebaseService } from './services/auth-firebase.service'
 import { Router } from '@angular/router';
 import { FcmService } from './services/fcm.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,9 @@ export class AppComponent {
     //private splashScreen: SplashScreen,
     //private statusBar: StatusBar,
     //public authFirebaseService: AuthFirebaseService,
-    private fcm: FcmService
+    private fcm: FcmService,
+    private http: HttpClient,
+    private userService: UserService
   ) {
     this.initializeApp();
   }

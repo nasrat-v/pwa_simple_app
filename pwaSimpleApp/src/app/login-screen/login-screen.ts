@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 // import { AuthFirebaseService } from '../services/auth-firebase.service'
 import { ProfileService, Profile } from '../services/profile.service';
 import { Router } from "@angular/router"
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../services/user.service';
 //import { ToastController } from '@ionic/angular';
 /*import {
   Plugins,
@@ -22,6 +24,14 @@ export interface Profile {
   _lat:         null
 }
 
+export interface User {
+  id: number
+  email: string,
+  password: string,
+  aperos_id: number,
+  error: string
+}
+
 @Component({
   selector: 'login-screen',
   templateUrl: 'login-screen.html',
@@ -30,6 +40,7 @@ export interface Profile {
 
 export class LoginScreen {
 
+  private user: User;
   username: string
   email: string;
   password: string;
@@ -39,9 +50,11 @@ export class LoginScreen {
   constructor(
     //private authFirebaseService: AuthFirebaseService,
     private profileService: ProfileService,
+    private userService: UserService,
     //private afAuth: AngularFireAuth, 
     //private afs: AngularFirestore,
     private router: Router,
+    private http: HttpClient
     //public toastController: ToastController
     ) {
 
@@ -60,7 +73,7 @@ export class LoginScreen {
   }
   
 
-  signup() {
+  async signup() {
     //this.authFirebaseService.signup(this.email, this.password);
     
     
@@ -73,15 +86,40 @@ export class LoginScreen {
         //this.profileService.createProfile(this.email);
         //this.authFirebaseService.user.
 
-        this.username = this.email = this.password = '';
-        this.router.navigate(['/tabs']);
+        this.user = {
+          id: null,
+          email: this.email,
+          password: this.password,
+          aperos_id: null,
+          error: ''
+        };
+        let ret = await this.userService.createUser(this.user);
+        //console.log(ret);
+        if (ret == "OK") {
+          this.email = this.password = '';
+          this.router.navigate(['/tabs']);
+        }
+        else {
+          console.log("Error: " + ret);
+        }       
   }
 
-  login() {
-    //this.authFirebaseService.login(this.email, this.password);
-    
-    this.email = this.password = '';
-    this.router.navigate(['/tabs']);
+  async login() {
+    this.user = {
+      id: null,
+      email: this.email,
+      password: this.password,
+      aperos_id: null,
+      error: ''
+    }
+    let ret = await this.userService.loginUser(this.user);
+    if (ret == "OK") {
+      this.email = this.password = '';
+      this.router.navigate(['/tabs']);
+    }
+    else {
+      console.log("Error: " + ret);
+    }
   }
 
   async presentToast(msg: string) {

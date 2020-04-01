@@ -5,24 +5,24 @@
   <content padding>   
     <!--<item>-->
       <label position="stacked">Date</label>
-      <input type="date" [(ngModel)]="apero._date" placeholder="Select Date" max="2030">
+      <input type="date" [(ngModel)]="apero.date" placeholder="Select Date" max="2030">
     <!--</item>-->
 
     <!--<item>-->
         <label position="stacked">Number of guests</label>
-        <input [(ngModel)]="apero._nb_slots">
+        <input [(ngModel)]="apero.nb_slots">
     <!--</item>-->
 
     <!--<item>-->
         <label position="stacked">Guests: </label>
-        <div *ngFor="let guest of apero._guests">
+        <div *ngFor="let guest of apero.guests">
           {{ guest }}
         </div>
     <!--</item>-->
    
   </content>
    
-  <footer *ngIf="apero._id==undefined">
+  <footer *ngIf="apero.id==null">
     <!--<row no-padding text-center>-->
         <!--<col size="12">-->
         <button vertical="bottom" horizontal="end" fill="solid" color="primary" (click)="addApero()">
@@ -33,7 +33,7 @@
     <!--</row>-->
   </footer>
    
-  <footer *ngIf="apero._id!==undefined">
+  <footer *ngIf="apero.id!==null">
     <!--<row no-padding text-center>-->
       <!--<col size="6">-->
         <button fill="solid" color="danger" (click)="deleteApero()">
