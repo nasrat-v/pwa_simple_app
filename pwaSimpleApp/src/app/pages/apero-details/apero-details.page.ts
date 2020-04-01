@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 //import { ToastController } from '@ionic/angular';
 import { Apero, AperoService } from 'src/app/services/apero.service';
 import { UserService } from 'src/app/services/user.service';
+import { GoogleMapsService } from '../../services/google-maps.service';
+
 //import { GoogleMapsService } from 'src/app/services/google-maps.service';
 //import { Plugins } from '@capacitor/core';
 //import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
@@ -35,6 +37,7 @@ export class AperoDetailsPage implements OnInit {
               private userService: UserService,
               private activatedRoute: ActivatedRoute, 
               private aperoService: AperoService,
+              private googleMapsService: GoogleMapsService,
               //private toastCtrl: ToastController, 
               private router: Router
               ) { }
@@ -57,17 +60,25 @@ export class AperoDetailsPage implements OnInit {
  
   async addApero() {
     //console.log("lalalal");
-    this.apero.id_host = this.userService.getUser().id;
-    this.apero.host_email = this.userService.getUser().email;
-    this.apero.lat = 42;
-    this.apero.lon = 24;
-    this.apero.address = "25 rue du Coq, 13001 Marseille";
-    this.apero.nb_slots = this.apero.nb_slots;
-    this.apero.guests = this.apero.guests;
-    this.apero.date = this.apero.date;
+    this.googleMapsService.getCurrentLocation().then(
+      location => {
+        this.apero.id_host = this.userService.getUser().id;
+        this.apero.host_email = this.userService.getUser().email;
+        this.apero.lat = location[0];
+        this.apero.lon = location[1];
+        this.apero.address = "25 rue du Coq, 13001 Marseille";
+        this.apero.nb_slots = this.apero.nb_slots;
+        this.apero.guests = this.apero.guests;
+        this.apero.date = this.apero.date;
 
-    let ret = await this.aperoService.addApero(this.apero);
-    this.router.navigateByUrl('tabs/apero-list');
+        this.aperoService.addApero(this.apero).then(
+          ret => {
+            this.router.navigateByUrl('tabs/apero-list');
+          }
+        );
+        
+      })
+    
 
     /*Plugins.Geolocation.getCurrentPosition().then(result => {
        

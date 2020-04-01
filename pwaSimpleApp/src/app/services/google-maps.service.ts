@@ -26,10 +26,18 @@ export class GoogleMapsService {
           if (!geoData || !geoData.results || geoData.results === 0) {
             return (null);
           }
-          console.log(geoData.results);
+          //console.log(geoData.results);
           return (geoData.results[0].formatted_address);
         })
       );
+  }
+
+  public async getCurrentLocation() {
+    if (navigator.geolocation) {
+      const res = await fetch('https://location.services.mozilla.com/v1/geolocate?key=test').then(el=>el.json())
+      return ([res.location.lat, res.location.lng]);
+
+    }
   }
 
 }

@@ -30,6 +30,8 @@ app.post('/addUser', (req, res) => {
             'id': id,
             'email': req.body.email,
             'password': req.body.password,
+            'lat': req.body.lat,
+            'lon': req.body.lon,
             "aperos_id": id
           }
           client.hmset("user:" + id, user, function(err, reply) {
@@ -49,20 +51,56 @@ app.get('/getUser', (req, res) => {
 
   client.hget("users:", req.query.email, function(err, id) {
 
-    client.hgetall("user:" + id, function(err, reply) {
-      if (reply == null) {
+    client.hgetall("user:" + id, function(err, user) {
+      if (user == null) {
         return res.send({"error": "User does not exist"});
       } else {
-        if(req.query.password != reply.password) {
+        if(req.query.password != user.password) {
           return res.send({"error": "Wrong password"});
         } else {
-          reply.password = "";
-          return res.send(reply);
+          if (req.query.lat != undefined && req.query.lon != undefined) {
+              user.lat = req.query.lat;
+              user.lon = req.query.lon;
+              client.hmset("user:" + id, user, function(err, reply) {
+                reply.password = "";
+                return res.send(user);
+              }) 
+          } else {
+            reply.password = "";
+            return res.send(user);
+          }
         }
       }
     })
   })
 });
+
+function measure(lat1, lon1, lat2, lon2){  // generally used geo measurement function
+  var R = 6378.137; // Radius of earth in KM
+  var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+  var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+  Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c;
+  return d * 1000; // meters
+}
+
+function notifyUsers(newApero) {
+  return new Promise((resolve, reject) => {
+    client.hgetall("users:", function(err, users) {
+      for (key in users){
+        client.hgetall("user:" + users[key], function(err, user) {
+          distance = measure(newApero.lat, newApero.lon, user.lat, user.lon)
+          if (distance < 20000) {
+            //ici il faut envoyer newAperoId à user
+          }
+        })
+      }
+    })
+  })  
+}
 
 app.post("/addApero", (req, res) => {
 
@@ -81,7 +119,8 @@ app.post("/addApero", (req, res) => {
     client.hmset("apero:" + id, newApero, function(err, reply) {
       client.hgetall("user:" + req.body.id_host, function(err, reply) {
         client.rpush("aperos_id:" + reply.aperos_id, id, function(err, reply) {
-          res.send(newApero);
+          notifyUsers(newApero);
+          return res.send(newApero);
         })
       }) 
     })

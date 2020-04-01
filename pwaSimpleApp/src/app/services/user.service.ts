@@ -5,6 +5,8 @@ export interface User {
   id: number,
   email: string,
   password: string,
+  lat: number,
+  lon: number,
   aperos_id: number,
   error: string
 }
@@ -44,7 +46,7 @@ export class UserService {
 
   loginUser(userLogin: User) {
     return new Promise((resolve, reject) =>{
-      this.http.get<User>("http://127.0.0.1:3000/getUser?email=" + userLogin.email + "&password=" + userLogin.password).toPromise().then(
+      this.http.get<User>("http://127.0.0.1:3000/getUser?email=" + userLogin.email + "&password=" + userLogin.password + "&lat=" + userLogin.lat + "&lon=" +userLogin.lon).toPromise().then(
         user => {
           if (user.error == undefined) {
             //console.log(user)

@@ -7,6 +7,8 @@ import { ProfileService, Profile } from '../services/profile.service';
 import { Router } from "@angular/router"
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../services/user.service';
+import { GoogleMapsService } from '../services/google-maps.service';
+
 //import { ToastController } from '@ionic/angular';
 /*import {
   Plugins,
@@ -16,18 +18,12 @@ import { UserService } from '../services/user.service';
   
   //const { PushNotifications } = Plugins;
 
-export interface Profile {
-  _id?:         '',
-  _email:       '',
-  _user_name:   '',
-  _lon:         null,
-  _lat:         null
-}
-
 export interface User {
   id: number
   email: string,
   password: string,
+  lat: number,
+  lon: number,
   aperos_id: number,
   error: string
 }
@@ -51,6 +47,7 @@ export class LoginScreen {
     //private authFirebaseService: AuthFirebaseService,
     private profileService: ProfileService,
     private userService: UserService,
+    private googleMapsService: GoogleMapsService,
     //private afAuth: AngularFireAuth, 
     //private afs: AngularFirestore,
     private router: Router,
@@ -74,52 +71,56 @@ export class LoginScreen {
   
 
   async signup() {
-    //this.authFirebaseService.signup(this.email, this.password);
-    
-    
-        /*this.profile._email = this.email;
-        this.profile._lat = 100;
-        this.profile._lon = 500;
-        this.profile._user_name = this.username;
-        this.profileService.addProfile(this.profile);*/
-        //this.profileService.
-        //this.profileService.createProfile(this.email);
-        //this.authFirebaseService.user.
 
+    this.googleMapsService.getCurrentLocation().then(
+      location => {
         this.user = {
           id: null,
           email: this.email,
           password: this.password,
+          lat: location[0],
+          lon: location[1],
           aperos_id: null,
           error: ''
         };
-        let ret = await this.userService.createUser(this.user);
-        //console.log(ret);
-        if (ret == "OK") {
-          this.email = this.password = '';
-          this.router.navigate(['/tabs']);
-        }
-        else {
-          console.log("Error: " + ret);
-        }       
+        this.userService.createUser(this.user).then(
+          ret => {
+            if (ret == "OK") {
+              this.email = this.password = '';
+              this.router.navigate(['/tabs']);
+            }
+            else {
+              console.log("Error: " + ret);
+            }
+          }
+        );        
+      });            
   }
 
   async login() {
-    this.user = {
-      id: null,
-      email: this.email,
-      password: this.password,
-      aperos_id: null,
-      error: ''
-    }
-    let ret = await this.userService.loginUser(this.user);
-    if (ret == "OK") {
-      this.email = this.password = '';
-      this.router.navigate(['/tabs']);
-    }
-    else {
-      console.log("Error: " + ret);
-    }
+    this.googleMapsService.getCurrentLocation().then(
+      location => {
+        this.user = {
+          id: null,
+          email: this.email,
+          password: this.password,
+          lat: location[0],
+          lon: location[1],
+          aperos_id: null,
+          error: ''
+        }
+        this.userService.loginUser(this.user).then(
+          ret => {
+            if (ret == "OK") {
+              this.email = this.password = '';
+              this.router.navigate(['/tabs']);
+            }
+            else {
+              console.log("Error: " + ret);
+            }
+          }
+        );
+      })
   }
 
   async presentToast(msg: string) {
