@@ -7,6 +7,8 @@ import {  RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 //import { AngularFireModule } from '@angular/fire';
 //import { AngularFireMessagingModule } from '@angular/fire/messaging';
@@ -52,6 +54,9 @@ const routes: Routes = [
     LoginScreenModule,  
     BrowserModule.withServerTransition({
       appId: 'ng-universal-demystified'
+    }),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
     })
   ],
   exports: [RouterModule],

@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 //import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 // import { AuthFirebaseService } from '../services/auth-firebase.service'
-import { ProfileService, Profile } from '../services/profile.service';
 import { Router } from "@angular/router"
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../services/user.service';
@@ -44,8 +43,6 @@ export class LoginScreen {
   //dataCollection: AngularFirestoreCollection<any>;
 
   constructor(
-    //private authFirebaseService: AuthFirebaseService,
-    private profileService: ProfileService,
     private userService: UserService,
     private googleMapsService: GoogleMapsService,
     //private afAuth: AngularFireAuth, 

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthFirebaseService } from '../services/auth-firebase.service'
 
 @Component({
   selector: 'app-tab3',

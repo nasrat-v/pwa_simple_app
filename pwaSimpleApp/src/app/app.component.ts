@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FcmService } from './services/fcm.service';
 import { UserService } from './services/user.service';
+import { SwPush } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent {
     //public authFirebaseService: AuthFirebaseService,
     private fcm: FcmService,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private swPush: SwPush,
   ) {
     this.initializeApp();
   }

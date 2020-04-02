@@ -1,7 +1,5 @@
 import { Component, NgModule } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router"
-//import { AuthFirebaseService } from '../services/auth-firebase.service';
-import { ProfileService } from '../services/profile.service';
 import { UserService } from '../services/user.service';
 import { SwPush } from '@angular/service-worker';
 
@@ -24,7 +22,7 @@ export class TabsPage {
 
   private route: ActivatedRoute
   private router: Router
-  private profileService: ProfileService;
+  //private profileService: ProfileService;
 
   constructor(
     private userService: UserService,

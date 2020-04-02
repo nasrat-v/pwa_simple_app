@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 //import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AuthFirebaseService } from './auth-firebase.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { response } from 'express';

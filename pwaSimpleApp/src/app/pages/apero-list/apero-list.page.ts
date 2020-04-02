@@ -26,7 +26,11 @@ export class AperoListPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.aperos = await this.aperoService.getAperos();
+    this.aperoService.getAperos().then(
+      aperos => {
+        this.aperos = aperos;
+      }
+    );
   }
 
   //fonction à utiliser grace aux notification push
