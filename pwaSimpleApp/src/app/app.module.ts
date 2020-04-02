@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 
 import { LoginScreenModule } from './login-screen/login-screen.module'
 import { TabsPageModule } from './tabs/tabs.module';
+
 /*
 const routes: Routes = [
   {
@@ -48,7 +49,7 @@ const routes: Routes = [
     //AngularFireMessagingModule,
     //AngularFireFunctionsModule,
     TabsPageModule,
-    LoginScreenModule,
+    LoginScreenModule,  
     BrowserModule.withServerTransition({
       appId: 'ng-universal-demystified'
     })

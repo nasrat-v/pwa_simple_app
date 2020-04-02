@@ -5,7 +5,14 @@ import { ProfileService } from '../services/profile.service';
 import { UserService } from '../services/user.service';
 import { SwPush } from '@angular/service-worker';
 
-/* {"publicKey":"BBpIBZLDwUAAiipbW0v4ecSdAdXwYa0crHkub0yAV8KJeMqydsAf8jP_ApsBMa1xT5h8N15A147_esszZOUrNt4","privateKey":"BOaRorKIO-N72X2UC8ONMRrhAQreuakuBt65aoNDFeg"} */
+
+/*
+{"publicKey":"BJaQW03qxObc8FrcQgJsAmn_IC-akz6GLam8CQ8XHoT78LlK40lFMjSNK6dM9HQU1Ew8q4e19fmYr3gXWqWzoPA",
+"privateKey":"-xu3Yc3gSidvhfT8b44r7K9u3HYWe2-fqm8nxa5gOV0"}
+*/
+
+const VAPID_PUBLIC = "BJaQW03qxObc8FrcQgJsAmn_IC-akz6GLam8CQ8XHoT78LlK40lFMjSNK6dM9HQU1Ew8q4e19fmYr3gXWqWzoPA"
+
 
 @Component({
   selector: 'app-tabs',
@@ -15,14 +22,13 @@ import { SwPush } from '@angular/service-worker';
 
 export class TabsPage {
 
-  private VAPID_PUBLIC = "BBpIBZLDwUAAiipbW0v4ecSdAdXwYa0crHkub0yAV8KJeMqydsAf8jP_ApsBMa1xT5h8N15A147_esszZOUrNt4";
-
   private route: ActivatedRoute
   private router: Router
   private profileService: ProfileService;
 
-  constructor(swPush : SwPush,
-    private userService: UserService    
+  constructor(
+    private userService: UserService,
+    private swPush : SwPush
     /*public authFirebaseService: AuthFirebaseService*/
     ) {
     //this.profileService = navParams.get('ProfileService');
@@ -32,16 +38,7 @@ export class TabsPage {
     //console.log("user !!" + authFirebaseService.getFirebaseAuth().auth.currentUser.uid);
     //firebase.auth().currentUser
 
-    if (swPush.isEnabled) {
-      swPush
-        .requestSubscription({
-          serverPublicKey: this.VAPID_PUBLIC,
-        })
-        .then(subscription => {
-          // send subscription to the server
-        })
-        .catch(console.error)
-    }
+  
   }
 
 }

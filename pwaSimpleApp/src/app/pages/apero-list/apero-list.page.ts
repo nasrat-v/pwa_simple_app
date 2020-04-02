@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 //import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
 //import { FcmService } from 'src/app/services/fcm.service';
 
+
+
 @Component({
   selector: 'app-apero-list',
   templateUrl: './apero-list.page.html',
@@ -17,6 +19,7 @@ export class AperoListPage implements OnInit {
   constructor(
     private aperoService: AperoService,
     private userService: UserService,
+    
     //public authFirebaseService: AuthFirebaseService,
     //public fcm: FcmService
     ) { 
