@@ -49,6 +49,9 @@ const routes: Routes = [
     //AngularFireFunctionsModule,
     TabsPageModule,
     LoginScreenModule,
+    BrowserModule.withServerTransition({
+      appId: 'ng-universal-demystified'
+    })
   ],
   exports: [RouterModule],
   providers: [
