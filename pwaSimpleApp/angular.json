@@ -151,6 +151,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "pwaSimpleApp"
+    }
+  },
+  "defaultProject": "pwaSimpleApp",
+  "cli": {
+    "analytics": "65f6b325-71f7-4009-a0e3-199801cf65d4"
+  }
 }
