@@ -94,7 +94,7 @@ function notifyUsers(newApero) {
         client.hgetall("user:" + users[key], function(err, user) {
           distance = measure(newApero.lat, newApero.lon, user.lat, user.lon)
           if (distance < 20000) {
-            //ici il faut envoyer newAperoId à user
+            //ici il faut envoyer newAperoId à user 
           }
         })
       }

@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class AperoListPage implements OnInit {
 
-  private aperos: Apero[];
+  public aperos: Apero[];
 
   constructor(
     private aperoService: AperoService,
