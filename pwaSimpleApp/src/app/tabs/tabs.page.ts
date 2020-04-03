@@ -11,7 +11,8 @@ import { UserStorageService } from '../services/user-storage.service';
 "privateKey":"-xu3Yc3gSidvhfT8b44r7K9u3HYWe2-fqm8nxa5gOV0"}
 */
 
-const VAPID_PUBLIC = "BJaQW03qxObc8FrcQgJsAmn_IC-akz6GLam8CQ8XHoT78LlK40lFMjSNK6dM9HQU1Ew8q4e19fmYr3gXWqWzoPA"
+//const VAPID_PUBLIC = "BIoQ9r576sXiCYdmfmIDH2lOJ70mT_hDMv-2HxZahXriUrhLvAkAAbRxbFteazYHCl1DmRS0KEnEA5TjKeFJfbs"
+const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w"
 
 
 @Component({
@@ -51,6 +52,7 @@ export class TabsPage {
         serverPublicKey: VAPID_PUBLIC
     })
     .then(sub => {  
+      //console.log(sub);
       this.notificationsPush.sendSubscriptionToTheServer(sub, userId).then(res => {
         console.log("Subscription done.");
         

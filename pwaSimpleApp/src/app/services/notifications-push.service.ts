@@ -32,7 +32,6 @@ export class NotificationsPushService {
       userId : userId,
       subscription : subscription
     }
-
     return new Promise((resolve, reject) =>{
       this.http.post<CustomSubscription>("http://localhost:3400/subscription", data).toPromise().then(
         apero => {
