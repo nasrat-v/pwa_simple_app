@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 //import { Observable } from 'rxjs';
 import { AperoService, Apero } from 'src/app/services/apero.service';
 import { UserService } from 'src/app/services/user.service';
-import { resolve } from 'url';
-import { reject } from 'q';
 //import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
 //import { FcmService } from 'src/app/services/fcm.service';
 
@@ -25,44 +23,14 @@ export class AperoListPage implements OnInit {
     //public authFirebaseService: AuthFirebaseService,
     //public fcm: FcmService
     ) { 
-    
   }
 
   async ngOnInit() {
     this.aperoService.getAperos().then(
       aperos => {
         this.aperos = aperos;
-        console.log(this.aperos)
-        this.aperos.forEach( (apero, AperoIndex) => {
-          this.aperos[AperoIndex].guests_id.forEach ( (guest_id, guestIndex) => {
-            if (parseInt(this.aperos[AperoIndex].guests_id[guestIndex]) == this.userService.getUser().id)
-              this.aperos[AperoIndex].guests_id[guestIndex] = "Me";
-            else {
-              this.userService.getUserNameById(this.aperos[AperoIndex].guests_id[guestIndex]).then(
-                user_name => {
-                  this.aperos[AperoIndex].guests_id[guestIndex] = user_name;
-                })
-            }
-          })
-        });
-        console.log(this.aperos)
       }
     );
-    console.log(this.userService.getUser());
-
-    
-  }
-
-  getUserNameById(user_id: string) {
-    console.log("on demande user_name");
-    return new Promise((resolve, reject) => {
-      this.userService.getUserNameById(user_id).then(
-        user_name => {
-          console.log(user_name);
-          resolve(user_name)
-        }
-      );
-    })
   }
 
   //fonction à utiliser grace aux notification push

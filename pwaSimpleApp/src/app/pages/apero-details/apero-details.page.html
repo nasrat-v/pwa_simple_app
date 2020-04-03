@@ -1,20 +1,17 @@
 <header>
       <title>Apero's details</title>
-  </header>   
-  
+  </header>
+   
   <content padding>   
     <!--<item>-->
       <label position="stacked">Date</label>
-      <input type="date" [(ngModel)]="apero.date" min="today" placeholder="dd-MM-yyyy" max="2030">
+      <input type="date" [(ngModel)]="apero.date" placeholder="Select Date" max="2030">
     <!--</item>-->
 
     <!--<item>-->
         <label position="stacked">Number of guests</label>
         <input [(ngModel)]="apero.nb_slots">
     <!--</item>-->
-
-    <label position="stacked">Address</label>
-    <input [(ngModel)]="apero.address" ngx-google-places-autocomplete [options]=options #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
 
     <!--<item>-->
         <label position="stacked">Guests: </label>

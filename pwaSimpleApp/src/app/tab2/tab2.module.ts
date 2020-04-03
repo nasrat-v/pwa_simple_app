@@ -13,7 +13,9 @@ import { environment } from "../../environments/environment";
     CommonModule,
     FormsModule,
     RouterModule.forChild([{ path: "", component: Tab2Page }]),
-    AgmCoreModule
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsApiKey
+    })
   ],
   declarations: [Tab2Page]
 })

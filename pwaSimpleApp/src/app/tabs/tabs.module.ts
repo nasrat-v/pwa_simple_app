@@ -5,17 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs-routing.module';
 import { TabsPage } from './tabs.page';
 
-import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
-import { AgmCoreModule } from '@agm/core';
+import { NotificationPushsService } from '../services/notification-pushs.service'
 
 @NgModule({
   imports: [
     //IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule,
-    MatGoogleMapsAutocompleteModule,
-    AgmCoreModule
+    TabsPageRoutingModule
   ],
   providers : [],
   declarations: [TabsPage]
