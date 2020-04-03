@@ -1,40 +1,38 @@
-<header>
-  <!--toolbar color="primary">-->
-    <title>
-      Welcome on AppHeraut !
-    </title>
-  <!--</toolbar>-->
-</header>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+  <div>
 
-<content>
+      <div class="login-header">
+          <h1 class="logo-name">HI!</h1>
+          <img class="logo-icon" src="../../assets/icons/appheraut.png">
+      </div>
 
-    <!--<h1 *ngIf="authFirebaseService.user | async">Welcome {{ (authFirebaseService.user | async)?.email }}!</h1>-->
+      <h3>Welcome to App-Heraut</h3>
+      <p>Perfectly designed and precisely prepared for you to meet and drink with new people.</p>
+      <p>Login to see it in action.</p>
 
-    <div class="centered">
-      <!--<card>
-        <card-header>
-          <card-title>Credentials</card-title>
-        </card-header>
-        <card-content>-->
-            <input type="text" [(ngModel)]="user.user_name" placeholder="UserName">
+      <form class="m-t" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+              <input type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'has-error': submitted && getForm().email.errors }" (change)="resetError()"/>
+              <div *ngIf="submitted && getForm().email.errors" class="invalid-feedback">
+                  <p class="form-error" *ngIf="getForm().email.errors.required">Email is required</p>
+              </div>
+          </div>
+          <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password" formControlName="password" [ngClass]="{ 'has-error': submitted && getForm().password.errors }" (change)="resetError()"/>
+              <div *ngIf="submitted && getForm().password.errors" class="invalid-feedback">
+                  <p class="form-error" *ngIf="getForm().password.errors.required">Password is required</p>
+              </div>
+          </div>
+          <div class="form-group">
+              <p class="form-error" *ngIf="isErrorInput">{{ errorInputMsg }}</p>
+              <button type="submit" class="btn btn-warning block full-width m-b" [disabled]="loading">Login</button>
+          </div>
 
-          <input type="text" [(ngModel)]="user.email" placeholder="Email"> 
+          <p class="text-muted text-center"><small>Do not have an account?</small></p>
+          <a class="btn btn-sm btn-secondary btn-block" [routerLink]="['/register']">Create an account</a>
+      </form>
 
-          <input type="password" [(ngModel)]="user.password" placeholder="Password">
-        <!--</card-content>
-        <card-content>-->
-          <button (click)="signup()" [disabled]="!user.user_name || !user.email || !user.password">
-            <!--<icon slot="end" name="arrow-dropleft"></icon>-->
-            Signup
-          </button>
+      <p class="m-t"> <small>AppHeraut team &copy; 2020</small> </p>
 
-          <button (click)="login()" [disabled]="!user.email || !user.password">
-            <!--<icon slot="start" name="arrow-dropright"></icon>-->
-            Login
-          </button>
-        <!--</card-content>
-      </card>-->
-
-    </div>
-    
-</content>
+  </div>
+</div>

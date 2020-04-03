@@ -9,11 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class GoogleMapsService {
 
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  // This function makes an http call to google api to decode the cordinates
   public getAddress(lat: number, lan: number): Observable<any> {
     return this.http
       .get<any>(
@@ -40,7 +37,7 @@ export class GoogleMapsService {
     }
   }
 
-  getGeoLocation(address: string): Observable<any> {
+  public getGeoLocation(address: string): Observable<any> {
     return this.http
       .get<any>(
         `https://maps.googleapis.com/maps/api/geocode/json?address='${address}'&key=${

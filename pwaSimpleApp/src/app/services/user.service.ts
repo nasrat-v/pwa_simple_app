@@ -1,18 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { resolve } from 'url';
-import { reject } from 'q';
 
-export interface User {
-  id: number,
-  email: string,
-  user_name: string,
-  password: string,
-  lat: number,
-  lon: number,
-  aperos_id: number,
-  error: string
-}
+import { User, UserCredentials } from '../types/user.type';
+import { ResultServerResponse, UserQueryServerResponse, UserNameQueryServerResponse } from '../types/server-response.type';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,58 +12,66 @@ export class UserService {
 
   private user: User;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) { 
+    this.resetUser();
+  }
 
-  getUser() {
+  private resetUser() {
+    this.user = null;
+  }
+  
+  public getUser() {
     return this.user;
   }
 
-  getUserNameById(user_id: string):Promise<string>{
-    return new Promise((resolve, reject) => {
-      this.http.get<User>("http://127.0.0.1:3000/getUserNameById?user_id=" + user_id).toPromise().then(
-        user => resolve(user.user_name)
-      )
+  public getUserNameById(user_id: string) {
+    return new Promise<string>((resolve, reject) => {
+      this.http.get<UserNameQueryServerResponse>("http://127.0.0.1:3000/getUserNameById?user_id=" + user_id).toPromise()
+      .then(res => {
+        console.log(res.msg);
+        resolve(res.user_name);
+      }, (err) => {
+        console.error(err.error.msg);
+        reject(err.error);
+      });
     })
   }
 
-  createUser(newUser: User){
-    return new Promise((resolve, reject) =>{
-      this.http.post<User>("http://127.0.0.1:3000/addUser", newUser).toPromise().then(
-        user => {
-          if (user.email != undefined) {
-            this.user = user;
-            resolve("OK");
-          } else {
-            resolve(user.error);
-          }
-        },
-        err => {
-          reject(err.error);
-        }
-      )
+  public createUser(userCreds: UserCredentials) {
+    return new Promise<ResultServerResponse>((resolve, reject) => {
+      this.http.post<ResultServerResponse>("http://127.0.0.1:3000/addUser", userCreds)
+      .toPromise()
+      .then(res => {
+        console.log(res.msg);
+        resolve(res);
+      },
+      (err) => {
+        console.error(err.error.msg);
+        reject(err.error);
+      });
     });
   }
 
-  loginUser(userLogin: User) {
-    return new Promise((resolve, reject) =>{
-      this.http.get<User>("http://127.0.0.1:3000/getUser?email=" + userLogin.email + "&password=" + userLogin.password + "&lat=" + userLogin.lat + "&lon=" +userLogin.lon).toPromise().then(
-        user => {
-          if (user.error == undefined) {
-            //console.log(user)
-            //console.log("on est log");
-            this.user = user;
-            resolve("OK");
-          } else {
-            resolve(user.error);
-          }
-        },
-        err => {
-          reject(err.error);
-          //console.error("ERROR: " + err.error);
-        });
+  public loginUser(userCreds: UserCredentials) {
+    return new Promise<UserQueryServerResponse>((resolve, reject) => {
+      this.http.post<UserQueryServerResponse>("http://127.0.0.1:3000/logIn", userCreds)
+      .toPromise()
+      .then(res => {
+        this.user = res.user;
+        this.tokenStorageService.saveToken(res.user_auth);
+        console.log(res.msg);
+        resolve(res);
+      },
+      (err) => {
+        console.error(err.error.msg);
+        reject(err.error);
+      });
     });
+  }
+
+  public logoutUser() {
+    this.resetUser();
+    this.tokenStorageService.removeToken();
   }
 
 }

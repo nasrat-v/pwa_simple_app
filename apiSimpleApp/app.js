@@ -1,85 +1,123 @@
-var express = require('express');
-//var mysql = require('mysql');
-const app = express();
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const expressJWT = require('express-jwt');
 const cors = require('cors');
-var redis = require('redis');
-var client = redis.createClient(); 
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override');
+const redis = require('redis');
+const bodyParser = require('body-parser')
+const methodOverride = require('method-override');
 
+var app = express();
+var client = redis.createClient();
+
+const secret = 'appheraut_some_secret';
+const statusSuccess = 200;
+const statusCreated = 201;
+const statusUnauthorized = 401;
+const statusForbidden = 403;
+const statusNotFound = 404;
+const statusInternalServerError = 500;
 
 client.on('connect', function() {
   console.log('connected');
 });
 
-
 app.use(cors());
 app.use(bodyParser.json())
 app.use(methodOverride());
+app.use(expressJWT({ secret: secret})
+  .unless(
+      { path: [
+          '/addUser',
+          '/logIn'
+      ]}
+));
+  
+function initNewUserDb(userBody, id) {
+  return {
+    'id': id,
+    'aperos_id': id,
+    'lat': userBody.user_loc.lat,
+    'lon': userBody.user_loc.lon,
+    'email': userBody.email,
+    'user_name': userBody.user_name,
+    'password': userBody.password
+  };
+}
+
+function formatUserDbForClient(userDb) {
+  return {
+    'id': userDb.id,
+    'aperos_id': userDb.aperos_id,
+    'email': userDb.email,
+    'user_name': userDb.user_name,
+    'user_loc': {
+      'lat': userDb.lat,
+      'lon': userDb.lon
+    }
+  };
+}
+
+function updateDbUserLocation(userDb, newLoc, callback) {
+  userDb.lat = newLoc.lat;
+  userDb.lon = newLoc.lon;
+  client.hmset("user:" + userDb.id, userDb, function(err, reply) {
+    callback();
+  });
+}
+
+function addUser(userBody, callback) {
+  client.incr("user:id:", function(err, id) {
+    client.hset('users:', userBody.email, id, function(err, reply) {
+      var newUser = initNewUserDb(userBody, id);
+
+      client.hmset("user:" + id, newUser, function(err, reply) {
+        callback();
+      });
+    });
+  });
+}
 
 app.post('/addUser', (req, res) => {
+  var userBody = req.body;
 
-  client.hget('users:', req.body.email, function(err, reply) {
-
+  client.hget('users:', userBody.email, function(err, reply) {
     if (reply == null) {
-
-      client.incr("user:id:", function(err, id) {
-
-        client.hset('users:', req.body.email, id, function(err, reply) {
-          console.log(req.body);
-          user = {
-            'id': id,
-            'email': req.body.email,
-            'user_name': req.body.user_name,
-            'password': req.body.password,
-            'lat': req.body.lat,
-            'lon': req.body.lon,
-            "aperos_id": id
-          }
-          client.hmset("user:" + id, user, function(err, reply) {
-
-            user.password = '';
-            return res.send(user);
-          });
-        });
+      addUser(userBody, () => {
+        res.status(statusCreated).json({"is_success": true, "msg": "User added"});
       });
     } else {
-      return res.send({"error": "User already exists"});
+      res.status(statusForbidden).json({"is_success": false, "msg": "User already exists"});
     }
   });
 });
 
-app.get('/getUser', (req, res) => {
+app.post('/logIn', (req, res) => {
+  var creds = req.body;
 
-  client.hget("users:", req.query.email, function(err, id) {
-
-    client.hgetall("user:" + id, function(err, user) {
-      if (user == null) {
-        return res.send({"error": "User does not exist"});
+  client.hget("users:", creds.email, function(err, id) {
+    client.hgetall("user:" + id, function(err, userDb) {
+      if (userDb == null) {
+        res.status(statusUnauthorized).json({"is_success": false, "msg": "User does not exists"});
+      } else if (userDb.password != creds.password) {
+        res.status(statusUnauthorized).json({"is_success": false, "msg": "Bad password"});
       } else {
-        if(req.query.password != user.password) {
-          return res.send({"error": "Wrong password"});
-        } else {
-          if (req.query.lat != undefined && req.query.lon != undefined) {
-              user.lat = req.query.lat;
-              user.lon = req.query.lon;
-              client.hmset("user:" + id, user, function(err, reply) {
-                reply.password = "";
-                return res.send(user);
-              }) 
-          } else {
-            reply.password = "";
-            return res.send(user);
-          }
-        }
+        updateDbUserLocation(userDb, creds.user_loc, () => {
+          var token = jwt.sign({'id': creds.id, 'email': creds.email}, secret, { expiresIn: '30m'});
+          var userClient = formatUserDbForClient(userDb);
+
+          res.status(statusSuccess).json({
+            "is_success": true, "msg": "User logged", 
+            "user": userClient, "user_auth": { "token": token }
+          });
+        });
       }
-    })
-  })
+    });
+  });
 });
 
 app.get("/getUserNameById", (req, res) => { 
   client.hget("user:" + req.query.user_id, "user_name", function(err, user_name) {
-    return res.send({"user_name": user_name});
+    res.status(statusSuccess).json({"is_success": true, "msg": "User found", "user_name": user_name});
   })
 })
 
