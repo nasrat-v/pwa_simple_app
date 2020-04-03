@@ -1,32 +1,10 @@
-import { Component } from '@angular/core';
-//import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-//import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-// import { AuthFirebaseService } from '../services/auth-firebase.service'
-import { Router } from "@angular/router"
-import { HttpClient } from '@angular/common/http';
-import { UserService, User } from '../services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { UserCredentials, UserLocation } from '../types/user.type';
+import { UserService } from '../services/user.service';
 import { GoogleMapsService } from '../services/google-maps.service';
-
-//import { ToastController } from '@ionic/angular';
-/*import {
-  Plugins,
-  PushNotification,
-  PushNotificationToken,
-  PushNotificationActionPerformed } from '@capacitor/core';*/
-  
-  //const { PushNotifications } = Plugins;
-
-/*export interface User {
-  id: number,
-  user_name: string,
-  email: string,
-  password: string,
-  lat: number,
-  lon: number,
-  aperos_id: number,
-  error: string
-}*/
 
 @Component({
   selector: 'login-screen',
@@ -34,149 +12,74 @@ import { GoogleMapsService } from '../services/google-maps.service';
   styleUrls: ['login-screen.scss']
 })
 
-export class LoginScreen {
-
-  public user: User;
-  //dataCollection: AngularFirestoreCollection<any>;
-
-  constructor(
-    private userService: UserService,
-    private googleMapsService: GoogleMapsService,
-    //private afAuth: AngularFireAuth, 
-    //private afs: AngularFirestore,
-    private router: Router,
-    private http: HttpClient,
-    
-    //public toastController: ToastController
-    ) {
-      this.user = {
-        id: null,
-        email: '',
-        password: '',
-        user_name: '',
-        lat: null,
-        lon: null,
-        aperos_id: null,
-        error: ''
-      };
-  }
+export class LoginScreen implements OnInit {
   
+  loginForm: FormGroup;
+  submitted = false;
+  loading = false;
+  isErrorInput = false;
+  errorInputMsg = '';
 
-  signup() {
+  constructor(private userService: UserService
+    , private googleMapsService: GoogleMapsService
+    , private formBuilder: FormBuilder
+    , private router: Router) {
+  }
 
-    var emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!emailReg.test(this.user.email)) {
-      console.log("invalid email")
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+        email: ['', Validators.required],
+        password: ['', Validators.required]
+    });
+  }
+
+  public onSubmit() {
+    this.submitted = true;
+
+    if (this.loginForm.invalid) {
       return;
     }
-
-    if (this.user.password.length < 6) {
-      console.log("invalid password")
-      return;
-
-    }
-
-    this.googleMapsService.getCurrentLocation().then(
-      location => {
-        this.user.lat = location[0];
-        this.user.lon = location[1];
-        /*this.user = {
-          id: null,
-          email: this.user.email,
-          password: this.user.password,
-          user_name: this.user.user_name,
-          lat: location[0],
-          lon: location[1],
-          aperos_id: null,
-          error: ''
-        };*/
-        this.userService.createUser(this.user).then(
-          ret => {
-            if (ret == "OK") {
-              this.user.email = this.user.password = '';
-              this.router.navigate(['/tabs']);
-            }
-            else {
-              console.log("Error: " + ret);
-            }
-          }
-        );        
-      });            
+    var userCreds: UserCredentials = {
+      email: this.getForm().email.value,
+      user_name: '',
+      password: this.getForm().password.value,
+      user_loc: { lat: -1, lon: -1 }
+    };
+    this.logIn(userCreds);
   }
 
-  login() {
-    this.googleMapsService.getCurrentLocation().then(
-      location => {
-        this.user.lat = location[0];
-        this.user.lon = location[1];
-        /*this.user = {
-          id: null,
-          email: this.user.email,
-          user_name: '',
-          password: this.user.password,
-          lat: location[0],
-          lon: location[1],
-          aperos_id: null,
-          error: ''
-        }*/
-        this.userService.loginUser(this.user).then(
-          ret => {
-            if (ret == "OK") {
-              this.user.email = this.user.password = '';
-              this.router.navigate(['/tabs']);
-            }
-            else {
-              console.log("Error: " + ret);
-            }
-          }
-        );
-      })
+  public getForm() {
+    return this.loginForm.controls;
   }
 
-  async presentToast(msg: string) {
-    /*const toast = await this.toastController.create({
-      message: msg,
-      duration: 3500
+  public resetError() {
+    this.isErrorInput = false;
+    this.errorInputMsg = '';
+  }
+
+  private setUserLocation(callback) {
+    this.googleMapsService.getCurrentLocation().then(location => {
+      callback({ lat: location[0], lon: location[1] });
     });
-    toast.present();*/
   }
 
-  setUserName(userName: string) {
+  private logIn(userCreds: UserCredentials) {
+    this.loading = true;
 
-  }
+    this.setUserLocation((userLoc: UserLocation) => {
+      userCreds.user_loc = userLoc;
 
-  /*anonLogin() {
-    this.afAuth.auth.signInAnonymously().then(res => {
-      this.user = res.user;
-      //console.log(this.user);
-
-      this.dataCollection = this.afs.collection(
-        `data/${this.user.uid}/profile`,
-        ref => ref.orderBy('date')
-      );
-
-    console.log(this.dataCollection);
-
-    this.data = this.dataCollection.valueChanges();
-   
-  });
-}
-
-
-  sendToDatabase() {
-    var date = new Date();
-    var first = "42"
-    var second = "24"
-    this.user = new Date();
-    console.log("push before  " + this.dataCollection)
-    this.dataCollection.add({
-      first,
-      second,
-      date
+      this.userService.loginUser(userCreds).then(ret => {
+        this.loading = false;
+        this.submitted = false;
+        this.router.navigate(['/tabs']);
+      }, (err) => {
+        this.loading = false;
+        this.submitted = false;
+        this.isErrorInput = true;
+        this.errorInputMsg = err.msg;
+      });
     });
-
-    console.log("push ok  " + this.dataCollection)
-  }*/
-
+  }
 }
  

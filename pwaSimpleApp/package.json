@@ -29,6 +29,7 @@
     "@angular/pwa": "^0.803.23",
     "@angular/router": "~8.2.13",
     "@angular/service-worker": "~8.2.13",
+    "@googlemaps/google-maps-services-js": "^2.4.2",
     "@nguniversal/express-engine": "^8.2.6",
     "@nguniversal/module-map-ngfactory-loader": "v8.2.6",
     "@types/googlemaps": "^3.37.0",
