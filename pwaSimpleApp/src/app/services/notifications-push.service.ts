@@ -15,20 +15,6 @@ export class NotificationsPushService {
   constructor(private http: HttpClient) {}
 
   public sendSubscriptionToTheServer(subscription: PushSubscription) {
-    return new Promise((resolve, reject) =>{
-      this.http.post<PushSubscription>("http://127.0.0.1:3400/subscription", subscription).toPromise().then(
-        res => {
-          resolve(res);
-        },
-        err => {
-          reject(err.error);
-        }
-      )
-    });
-  }
-
-  /*
-  public sendSubscriptionToTheServer(subscription: PushSubscription) {
     console.log("New subscription sent");
     this.http.post(SERVER_URL, subscription)
     .subscribe(
@@ -36,5 +22,5 @@ export class NotificationsPushService {
       err => console.error(err)
     );
     //return this.http.post(SERVER_URL, subscription)
-  }*/
+  }
 }

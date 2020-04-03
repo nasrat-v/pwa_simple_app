@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import { Plugins } from '@capacitor/core';
 //import { ToastController } from '@ionic/angular';
 import { GoogleMapsService } from '../services/google-maps.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -15,12 +16,20 @@ export class Tab2Page implements OnInit {
 
   constructor(
     private googleMapsService: GoogleMapsService,
+    private activatedRoute: ActivatedRoute, 
     //public toastController: ToastController
   ) {}
 
   ngOnInit() {
     // call get current location function on initializing
-    this.getCurrentLocation();
+    let lat = this.activatedRoute.snapshot.paramMap.get('lat');
+    let lon = this.activatedRoute.snapshot.paramMap.get('lon');
+    if (lat && lon) {
+      this.lat = parseFloat(lat);
+      this.lng = parseFloat(lon);
+    } else {
+      this.getCurrentLocation();
+    }
   }
 
   // Function to get the current geo position of the device
@@ -29,10 +38,6 @@ export class Tab2Page implements OnInit {
       location => {
         this.lat = location[0];
         this.lng = location[1];
-        this.googleMapsService.getAddress(this.lat, this.lng).subscribe(decodedAddress => {
-          this.address = decodedAddress;
-          console.log(this.address);
-        });
       });
   }
 
