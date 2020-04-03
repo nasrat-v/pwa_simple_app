@@ -11,7 +11,12 @@ import { UserService } from './services/user.service';
 import { SwPush } from '@angular/service-worker';
 import { NotificationsPushService } from './services/notifications-push.service'
 
-const VAPID_PUBLIC = "BJaQW03qxObc8FrcQgJsAmn_IC-akz6GLam8CQ8XHoT78LlK40lFMjSNK6dM9HQU1Ew8q4e19fmYr3gXWqWzoPA";
+/*
+{"publicKey":"BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w"
+,"privateKey":"o966EZaIx7JVkHWO0BjcB0JMWz4qnxS3WIAla1ELraQ"}
+*/
+
+const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w";
 
 @Component({
   selector: 'app-root',
@@ -46,7 +51,13 @@ export class AppComponent {
         serverPublicKey: VAPID_PUBLIC
     })
     .then(sub => {  
-      this.notificationsPush.sendSubscriptionToTheServer(sub)
+      this.notificationsPush.sendSubscriptionToTheServer(sub).then(res => {
+        console.log("Subscription done.");
+        
+        this.notificationsPush.sendNotifApero("Test message")
+        .then(res => console.log("ok"), error => {console.log(error.error)});
+
+      }, error => {console.log(error.error)});
 
       /*
       this.notificationsPush.sendSubscriptionToTheServer(sub).then(
