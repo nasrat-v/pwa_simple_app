@@ -41,13 +41,10 @@ export class AperoDetailsPage implements OnInit {
   };
 
   constructor(
-    //public authFirebaseService: AuthFirebaseService,
-              //private googleMapsService: GoogleMapsService,
               private userService: UserService,
               private activatedRoute: ActivatedRoute, 
               private aperoService: AperoService,
               private googleMapsService: GoogleMapsService,
-              //private toastCtrl: ToastController, 
               private router: Router
               ) { }
 
@@ -57,19 +54,11 @@ export class AperoDetailsPage implements OnInit {
       this.aperoService.getApero(id).then(
         apero => {
           this.apero = apero;
+          console.log(this.apero);
         }
       );
     }
   }
-
-  /*ionViewWillEnter() {
-    let id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) {
-      this.aperoService.getApero(id).subscribe(apero => {
-        this.apero = apero;
-      });
-    }
-  }*/
  
   addApero() {
     if (isNaN(parseInt(this.apero.nb_slots)) || parseInt(this.apero.nb_slots) <= 0 || parseInt(this.apero.nb_slots) > 100) {
@@ -142,7 +131,6 @@ export class AperoDetailsPage implements OnInit {
   @ViewChild("placesRef", null) placesRef : GooglePlaceDirective;
     
         public handleAddressChange(address: Address) {
-          //this.apero.address = address.
           this.apero.address = address.formatted_address
     }
 }

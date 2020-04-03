@@ -173,8 +173,11 @@ app.get("/getAperos", (req, res) => {
 })
 
 app.get("/getApero", (req, res) => {
-  client.hgetall("apero:" + req.query.apero_id, function(err, reply) {
-    return res.send(reply);
+  client.hgetall("apero:" + req.query.apero_id, function(err, apero) {
+    client.lrange("guests_id:" + apero.guests_id, 0, -1, async function(err, guests_id) {
+      apero.guests_id = guests_id;
+      return res.send(apero);
+    })
   })
 })
 
