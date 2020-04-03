@@ -1,8 +1,9 @@
 import { Component, NgModule } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router"
-import { UserService } from '../services/user.service';
 import { SwPush } from '@angular/service-worker';
+
 import { NotificationsPushService } from '../services/notifications-push.service';
+import { UserStorageService } from '../services/user-storage.service';
 
 
 /*
@@ -26,7 +27,7 @@ export class TabsPage {
   //private profileService: ProfileService;
 
   constructor(
-    private userService: UserService,
+    private userStorageService: UserStorageService,
     private swPush : SwPush,
     private notificationsPush : NotificationsPushService,
     /*public authFirebaseService: AuthFirebaseService*/
@@ -39,7 +40,7 @@ export class TabsPage {
     //firebase.auth().currentUser
 
 
-      this.initNotifications(this.userService.getUser().id);
+      this.initNotifications(this.userStorageService.getUser().id);
   }
 
   initNotifications(userId) {

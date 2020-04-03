@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { User, UserCredentials } from '../types/user.type';
 import { ResultServerResponse, UserQueryServerResponse, UserNameQueryServerResponse } from '../types/server-response.type';
 import { TokenStorageService } from '../services/token-storage.service';
+import { UserStorageService } from '../services/user-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,11 @@ export class UserService {
 
   private user: User;
 
-  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) { 
-    this.resetUser();
+  constructor(private http: HttpClient
+    , private tokenStorageService: TokenStorageService
+    , private userStorageService: UserStorageService) { 
   }
 
-  private resetUser() {
-    this.user = null;
-  }
-  
-  public getUser() {
-    return this.user;
-  }
 
   public getUserNameById(user_id: string) {
     return new Promise<string>((resolve, reject) => {
@@ -57,7 +52,7 @@ export class UserService {
       this.http.post<UserQueryServerResponse>("http://127.0.0.1:3000/logIn", userCreds)
       .toPromise()
       .then(res => {
-        this.user = res.user;
+        this.userStorageService.saveUser(res.user);
         this.tokenStorageService.saveToken(res.user_auth);
         console.log(res.msg);
         resolve(res);
@@ -70,7 +65,7 @@ export class UserService {
   }
 
   public logoutUser() {
-    this.resetUser();
+    this.userStorageService.removeUser();
     this.tokenStorageService.removeToken();
   }
 

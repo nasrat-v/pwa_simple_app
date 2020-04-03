@@ -20,7 +20,7 @@ export class AperoListPage implements OnInit {
 
   constructor(
     private aperoService: AperoService,
-    private userService: UserService,
+    private userService: UserService
     
     //public authFirebaseService: AuthFirebaseService,
     //public fcm: FcmService
@@ -35,9 +35,6 @@ export class AperoListPage implements OnInit {
         console.log(this.aperos)
       }
     );
-    console.log(this.userService.getUser());
-
-    
   }
 
   getUserNameById(user_id: string) {

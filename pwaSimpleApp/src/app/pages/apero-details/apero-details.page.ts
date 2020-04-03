@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 //import { ToastController } from '@ionic/angular';
 import { Apero, AperoService } from 'src/app/services/apero.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserStorageService } from 'src/app/services/user-storage.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
@@ -41,7 +41,7 @@ export class AperoDetailsPage implements OnInit {
   };
 
   constructor(
-              private userService: UserService,
+              private userStorageService: UserStorageService,
               private activatedRoute: ActivatedRoute, 
               private aperoService: AperoService,
               private googleMapsService: GoogleMapsService,
@@ -74,8 +74,8 @@ export class AperoDetailsPage implements OnInit {
         }
         console.log(location.lat);
         console.log(location.lon);
-        this.apero.id_host = this.userService.getUser().id;
-        this.apero.host_user_name = this.userService.getUser().user_name;
+        this.apero.id_host = this.userStorageService.getUser().id;
+        this.apero.host_user_name = this.userStorageService.getUser().user_name;
         this.apero.lat = location.lat;
         this.apero.lon = location.lon;
         this.apero.address = this.apero.address;
