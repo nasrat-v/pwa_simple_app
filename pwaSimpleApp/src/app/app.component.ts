@@ -11,13 +11,6 @@ import { UserService } from './services/user.service';
 import { SwPush } from '@angular/service-worker';
 import { NotificationsPushService } from './services/notifications-push.service'
 
-/*
-{"publicKey":"BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w"
-,"privateKey":"o966EZaIx7JVkHWO0BjcB0JMWz4qnxS3WIAla1ELraQ"}
-*/
-
-const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w";
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
