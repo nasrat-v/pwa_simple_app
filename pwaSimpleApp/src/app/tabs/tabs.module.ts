@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs-routing.module';
 import { TabsPage } from './tabs.page';
 
-import { NotificationPushsService } from '../services/notification-pushs.service'
+import { NotificationsPushService } from '../services/notifications-push.service'
 
 @NgModule({
   imports: [
