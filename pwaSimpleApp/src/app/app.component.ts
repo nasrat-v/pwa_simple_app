@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 import { FcmService } from './services/fcm.service';
 import { UserService } from './services/user.service';
 import { SwPush } from '@angular/service-worker';
+import { NotificationsPushService } from './services/notifications-push.service'
+
+const VAPID_PUBLIC = "BJaQW03qxObc8FrcQgJsAmn_IC-akz6GLam8CQ8XHoT78LlK40lFMjSNK6dM9HQU1Ew8q4e19fmYr3gXWqWzoPA";
 
 @Component({
   selector: 'app-root',
@@ -29,8 +32,24 @@ export class AppComponent {
     private http: HttpClient,
     private userService: UserService,
     private swPush: SwPush,
+    private notificationsPush : NotificationsPushService
   ) {
     this.initializeApp();
+    this.initNotifications();
+  }
+
+  initNotifications() {
+
+    if (this.swPush.isEnabled) {
+    console.log("wtf ok swpush");
+      this.swPush.requestSubscription({
+        serverPublicKey: VAPID_PUBLIC
+    })
+    .then(sub => this.notificationsPush.sendSubscriptionToTheServer(sub))
+    .catch(err => console.error("Could not subscribe to notifications", err));
+    } else {
+      console.log("SwPush not enabled on this computer.")
+    }
   }
 
   initializeApp() {

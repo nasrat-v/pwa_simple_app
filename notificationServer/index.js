@@ -17,12 +17,13 @@ app.use(bodyParser.json())
 
 webpush.setVapidDetails('mailto:nicolas.felten@epitech.eu', PUBLIC_VAPID, PRIVATE_VAPID)
 
-app.listen(3000, () => {
-  console.log('Server started on port 3000')
+app.listen(3400, () => {
+  console.log('Server started on port 3400')
 })
 
 app.post('/subscription', (req, res) => {
     const subscription = req.body
+    console.log("New subscription", req.body);
     fakeDatabase.push(subscription)
 })
 
