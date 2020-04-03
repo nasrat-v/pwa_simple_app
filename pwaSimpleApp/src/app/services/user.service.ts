@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { resolve } from 'url';
+import { reject } from 'q';
 
 export interface User {
   id: number,
   email: string,
+  user_name: string,
   password: string,
   lat: number,
   lon: number,
@@ -24,6 +27,14 @@ export class UserService {
 
   getUser() {
     return this.user;
+  }
+
+  getUserNameById(user_id: string):Promise<string>{
+    return new Promise((resolve, reject) => {
+      this.http.get<User>("http://127.0.0.1:3000/getUserNameById?user_id=" + user_id).toPromise().then(
+        user => resolve(user.user_name)
+      )
+    })
   }
 
   createUser(newUser: User){

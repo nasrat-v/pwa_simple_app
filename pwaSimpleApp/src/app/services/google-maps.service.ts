@@ -40,4 +40,26 @@ export class GoogleMapsService {
     }
   }
 
+  getGeoLocation(address: string): Observable<any> {
+    return this.http
+      .get<any>(
+        `https://maps.googleapis.com/maps/api/geocode/json?address='${address}'&key=${
+          environment.googleMapsApiKey
+        }`
+      )
+      .pipe(
+        map(geoData => {
+
+          if (!geoData || !geoData.results || geoData.results === 0) {
+            return (null);
+          }
+          
+          return ({ 
+            lat: geoData.results[0].geometry.location.lat, 
+            lon: geoData.results[0].geometry.location.lng
+          });
+        })
+      );
+}
+
 }

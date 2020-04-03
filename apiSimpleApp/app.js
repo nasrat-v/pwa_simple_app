@@ -26,9 +26,11 @@ app.post('/addUser', (req, res) => {
       client.incr("user:id:", function(err, id) {
 
         client.hset('users:', req.body.email, id, function(err, reply) {
+          console.log(req.body);
           user = {
             'id': id,
             'email': req.body.email,
+            'user_name': req.body.user_name,
             'password': req.body.password,
             'lat': req.body.lat,
             'lon': req.body.lon,
@@ -75,6 +77,12 @@ app.get('/getUser', (req, res) => {
   })
 });
 
+app.get("/getUserNameById", (req, res) => { 
+  client.hget("user:" + req.query.user_id, "user_name", function(err, user_name) {
+    return res.send({"user_name": user_name});
+  })
+})
+
 function measure(lat1, lon1, lat2, lon2){  // generally used geo measurement function
   var R = 6378.137; // Radius of earth in KM
   var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -105,10 +113,11 @@ function notifyUsers(newApero) {
 app.post("/addApero", (req, res) => {
 
   client.incr("apero:id", function(err, id) {
+    console.log(req.body);
     newApero = {
       "id": id,
       "id_host": parseInt(req.body.id_host),
-      "host_email": req.body.host_email,
+      "host_user_name": req.body.host_user_name,
       "lat": req.body.lat,
       "lon": req.body.lon,
       "address": req.body.address,
@@ -117,8 +126,14 @@ app.post("/addApero", (req, res) => {
       "date": req.body.date
     }
     client.hmset("apero:" + id, newApero, function(err, reply) {
+      console.log("error" + err);
+      console.log("reply" + reply)
       client.hgetall("user:" + req.body.id_host, function(err, reply) {
+        console.log("error" + err);
+        console.log("reply" + reply)
         client.rpush("aperos_id:" + reply.aperos_id, id, function(err, reply) {
+          console.log("error" + err);
+          console.log("reply" + reply)
           notifyUsers(newApero);
           return res.send(newApero);
         })
@@ -132,8 +147,22 @@ app.get("/getAperos", (req, res) => {
   client.lrange("aperos_id:" + req.query.aperos_id, 0, -1, async function(err, reply) {
       for (key in reply) {
         let promise = new Promise((resolve, reject) => {
-          client.hgetall("apero:" + reply[key], function(err, reply) {
-            resolve(reply);
+          client.hgetall("apero:" + reply[key], function(err, apero) {
+
+            client.lrange("guests_id:" + apero.guests_id, 0, -1, async function(err, guests_id) {
+              apero.guests_id = guests_id;
+              resolve(apero);
+              /*for (key in guests_id) {
+                let promise = Promise((resolve, reject) => {
+                  client.hget("user:" + guests_id[key], "user_name", function(err, user_name) {
+                    console.log(user_name);
+                    resolve(user_name);
+                  })
+                })
+                let user_name = await promise;
+                apero.guests_id.push(user_name);
+              }*/
+            })
           })
       })
       let apero = await promise;

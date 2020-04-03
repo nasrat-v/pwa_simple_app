@@ -16,17 +16,19 @@
           <card-title>Credentials</card-title>
         </card-header>
         <card-content>-->
-          <input type="text" [(ngModel)]="email" placeholder="Email"> 
+            <input type="text" [(ngModel)]="user.user_name" placeholder="UserName">
 
-          <input type="password" [(ngModel)]="password" placeholder="Password">
+          <input type="text" [(ngModel)]="user.email" placeholder="Email"> 
+
+          <input type="password" [(ngModel)]="user.password" placeholder="Password">
         <!--</card-content>
         <card-content>-->
-          <button (click)="signup()" [disabled]="!email || !password">
+          <button (click)="signup()" [disabled]="!user.user_name || !user.email || !user.password">
             <!--<icon slot="end" name="arrow-dropleft"></icon>-->
             Signup
           </button>
 
-          <button (click)="login()" [disabled]="!email || !password">
+          <button (click)="login()" [disabled]="!user.email || !user.password">
             <!--<icon slot="start" name="arrow-dropright"></icon>-->
             Login
           </button>
