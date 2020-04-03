@@ -4,18 +4,9 @@
 
 export const environment = {
   production: false,
-  googleMapsApiKey: 'AIzaSyDjOhH-Ww2p9GL3znmjppag64ErZfFRPgc',
-  firebase: {
-    apiKey: "AIzaSyCI3Tnnt_u7wzhR1B8FGEs_ZbkxChB2c8s",
-    authDomain: "app-heraut.firebaseapp.com",
-    databaseURL: "https://app-heraut.firebaseio.com",
-    projectId: "app-heraut",
-    storageBucket: "app-heraut.appspot.com",
-    messagingSenderId: "531075293501"
-  }
+  googleMapsApiKey: 'AIzaSyDjOhH-Ww2p9GL3znmjppag64ErZfFRPgc'
 };
 
-export const googleMapsApiKey = "AIzaSyCCSbh-o9dazlf63Dluq1pACw2Hj6_i65E";
 
 
 
