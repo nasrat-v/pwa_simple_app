@@ -26,7 +26,7 @@ export class AperoDetailsPage implements OnInit {
     componentRestrictions: { country: 'FR' }
     };
 
-    today = new Date();
+    today :string = new Date().toISOString().substring(0, 10);
 
   apero: Apero = {
     id: null,
@@ -49,6 +49,7 @@ export class AperoDetailsPage implements OnInit {
               ) { }
 
   ngOnInit() {
+    console.log(this.today);
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.aperoService.getApero(id).then(
