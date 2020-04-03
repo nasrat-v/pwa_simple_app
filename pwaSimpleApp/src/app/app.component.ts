@@ -38,14 +38,23 @@ export class AppComponent {
     this.initNotifications();
   }
 
-  initNotifications() {
+   initNotifications() {
 
     if (this.swPush.isEnabled) {
     console.log("wtf ok swpush");
       this.swPush.requestSubscription({
         serverPublicKey: VAPID_PUBLIC
     })
-    .then(sub => this.notificationsPush.sendSubscriptionToTheServer(sub))
+    .then(sub => {  
+      this.notificationsPush.sendSubscriptionToTheServer(sub)
+
+      /*
+      this.notificationsPush.sendSubscriptionToTheServer(sub).then(
+        ret => {
+          console.log("OK");
+        }
+      );*/
+    })
     .catch(err => console.error("Could not subscribe to notifications", err));
     } else {
       console.log("SwPush not enabled on this computer.")
