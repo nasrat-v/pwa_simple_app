@@ -10,12 +10,12 @@ import { response } from 'express';
 export interface Apero {
   id?: number
   id_host:  number
-  host_user_name: string,
+  host_email: string,
   lat:             number,
   lon:             number,
   address:          string,
-  nb_slots:         string,
-  guests_id:          string[],
+  nb_slots:         number,
+  guests:          string[],
   date:            Date;
 }
 
@@ -104,7 +104,6 @@ export class AperoService {
   }
 
   addApero(newApero: Apero) /*: Promise<DocumentReference> */ {
-    console.log(newApero);
     return new Promise((resolve, reject) =>{
       this.http.post<Apero>("http://127.0.0.1:3000/addApero", newApero).toPromise().then(
         apero => {

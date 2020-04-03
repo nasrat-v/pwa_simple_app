@@ -31,16 +31,10 @@
       </ion-fab-button>
     </ion-fab>-->
    
-  <div *ngFor="let apero of aperos">
-    <button [routerLink]="['/tabs/apero-details', apero.id]">
-      {{ apero.host_user_name }}
+  <div>
+    <button [routerLink]="['/tabs/apero-details', apero.id]" *ngFor="let apero of aperos">
+      {{ apero.host_email }}
     </button>
-    <button [routerLink]="['/tabs/tab2', apero.lat, apero.lon]">
-      show map
-    </button>
-    <div *ngFor="let user_id of apero.guests_id">
-      {{user_id}}      
-    </div>
   </div>
 
 </content>

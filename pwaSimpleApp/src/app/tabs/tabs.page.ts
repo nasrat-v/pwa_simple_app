@@ -36,7 +36,6 @@ export class TabsPage {
     //console.log("user !!" + authFirebaseService.getFirebaseAuth().auth.currentUser.uid);
     //firebase.auth().currentUser
 
-
   
   }
 

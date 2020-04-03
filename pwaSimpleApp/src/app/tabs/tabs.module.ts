@@ -13,9 +13,7 @@ import { AgmCoreModule } from '@agm/core';
     //IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule,
-    MatGoogleMapsAutocompleteModule,
-    AgmCoreModule
+    TabsPageRoutingModule
   ],
   providers : [],
   declarations: [TabsPage]

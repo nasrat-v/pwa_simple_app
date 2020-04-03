@@ -20,9 +20,7 @@ import { environment } from '../environments/environment';
 
 import { LoginScreenModule } from './login-screen/login-screen.module'
 import { TabsPageModule } from './tabs/tabs.module';
-import { AgmCoreModule } from '@agm/core';
-import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+
 /*
 const routes: Routes = [
   {
@@ -47,7 +45,6 @@ const routes: Routes = [
     //IonicModule.forRoot(),
     AppRoutingModule, 
     HttpClientModule,
-    GooglePlaceModule,
     //AngularFireModule.initializeApp(environment.firebase),
     //AngularFirestoreModule,
     //AngularFireAuthModule,
@@ -60,12 +57,7 @@ const routes: Routes = [
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production
-    }),
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleMapsApiKey
-    }),
-    MatGoogleMapsAutocompleteModule,
-    AgmCoreModule.forRoot()
+    })
   ],
   exports: [RouterModule],
   providers: [

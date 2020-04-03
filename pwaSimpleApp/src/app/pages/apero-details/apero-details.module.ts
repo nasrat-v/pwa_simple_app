@@ -8,8 +8,6 @@ import { AperoDetailsPageRoutingModule } from './apero-details-routing.module';
 
 import { AperoDetailsPage } from './apero-details.page';
 import { RouterModule } from '@angular/router';
-import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 @NgModule({
   imports: [
@@ -18,8 +16,6 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
     //IonicModule,
     //AperoDetailsPageRoutingModule,
     RouterModule.forChild([{ path: "", component: AperoDetailsPage }]),
-    GooglePlaceModule
-
   ],
   declarations: [AperoDetailsPage]
 })
