@@ -36,7 +36,7 @@ import { GoogleMapsService } from '../services/google-maps.service';
 
 export class LoginScreen {
 
-  private user: User;
+  public user: User;
   //dataCollection: AngularFirestoreCollection<any>;
 
   constructor(

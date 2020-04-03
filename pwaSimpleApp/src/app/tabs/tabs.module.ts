@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs-routing.module';
 import { TabsPage } from './tabs.page';
 
-import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
@@ -14,7 +13,6 @@ import { AgmCoreModule } from '@agm/core';
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,
-    MatGoogleMapsAutocompleteModule,
     AgmCoreModule
   ],
   providers : [],

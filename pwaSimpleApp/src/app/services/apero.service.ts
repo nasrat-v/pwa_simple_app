@@ -23,7 +23,7 @@ export interface Apero {
   providedIn: 'root'
 })
 export class AperoService {
-  private aperos: Apero[];
+  //private aperos: Apero[];
   //private aperoCollection: AngularFirestoreCollection<Apero>;
   //private aperosHost:  Observable<Apero[]>;
   //private AperosCollectionHost: AngularFirestoreCollection<Apero>;
@@ -59,7 +59,20 @@ export class AperoService {
     return new Promise((resolve, reject) => {
       this.http.get<Apero[]>("http://127.0.0.1:3000/getAperos?aperos_id=" + this.userService.getUser().aperos_id).toPromise().then(
         aperos => {
-          this.aperos = aperos;
+          aperos.forEach( (apero, AperoIndex) => {
+            aperos[AperoIndex].guests_id.forEach ( (guest_id, guestIndex) => {
+              if (parseInt(aperos[AperoIndex].guests_id[guestIndex]) == this.userService.getUser().id)
+                aperos[AperoIndex].guests_id[guestIndex] = "Me";
+              else {
+                this.userService.getUserNameById(aperos[AperoIndex].guests_id[guestIndex]).then(
+                  user_name => {
+                    aperos[AperoIndex].guests_id[guestIndex] = user_name;
+                  })
+              }
+            })
+          });
+          //console.log(this.aperos)
+        //this.aperos = aperos;
           resolve(aperos);
         },
         err => {
@@ -72,6 +85,17 @@ export class AperoService {
     return new Promise((resolve, reject) => {
       this.http.get<Apero>("http://127.0.0.1:3000/getApero?apero_id=" + apero_id).toPromise().then(
         apero => {
+          apero.guests_id.forEach( (guest_id, index) => {
+            if (parseInt(apero.guests_id[index]) == this.userService.getUser().id)
+            apero.guests_id[index] = "Me";
+              else {
+                this.userService.getUserNameById(apero.guests_id[index]).then(
+                  user_name => {
+                    apero.guests_id[index] = user_name;
+                  })
+              }
+            
+          });
           //this.aperos = aperos;
           resolve(apero);
         },

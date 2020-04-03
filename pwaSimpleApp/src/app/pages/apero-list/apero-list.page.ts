@@ -33,19 +33,6 @@ export class AperoListPage implements OnInit {
       aperos => {
         this.aperos = aperos;
         console.log(this.aperos)
-        this.aperos.forEach( (apero, AperoIndex) => {
-          this.aperos[AperoIndex].guests_id.forEach ( (guest_id, guestIndex) => {
-            if (parseInt(this.aperos[AperoIndex].guests_id[guestIndex]) == this.userService.getUser().id)
-              this.aperos[AperoIndex].guests_id[guestIndex] = "Me";
-            else {
-              this.userService.getUserNameById(this.aperos[AperoIndex].guests_id[guestIndex]).then(
-                user_name => {
-                  this.aperos[AperoIndex].guests_id[guestIndex] = user_name;
-                })
-            }
-          })
-        });
-        console.log(this.aperos)
       }
     );
     console.log(this.userService.getUser());
