@@ -12,6 +12,11 @@ class NotifMessage {
   message : string
 }
 
+class CustomSubscription {
+  userId : Int32Array
+  subscription : PushSubscription
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,11 +25,16 @@ export class NotificationsPushService {
   constructor(private http: HttpClient) {}
 
   
-  public sendSubscriptionToTheServer(subscription: PushSubscription) {
+  public sendSubscriptionToTheServer(subscription: PushSubscription, userId: Int32Array) {
     console.log("new subscription");
     
+    var data : CustomSubscription = {
+      userId : userId,
+      subscription : subscription
+    }
+
     return new Promise((resolve, reject) =>{
-      this.http.post<PushSubscription>("http://localhost:3400/subscription", subscription).toPromise().then(
+      this.http.post<CustomSubscription>("http://localhost:3400/subscription", data).toPromise().then(
         apero => {
           resolve("ok test de ouf");
         },

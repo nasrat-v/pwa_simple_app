@@ -23,9 +23,10 @@ app.listen(3400, () => {
 })
 
 app.post('/subscription', (req, res) => {
-    const subscription = req.body
-    console.log("New subscription", req.body);
-    fakeDatabase.push(subscription)
+    const subscription = req.body;
+    console.log("New subscription", req.body.userId);
+    fakeDatabase.push(subscription);
+
     res.send(req.body);
 })
 
@@ -56,8 +57,9 @@ app.post('/sendNotification', (req, res) => {
       fakeDatabase.map(sub => console.log(sub));
       //Promise.all(promises).then(() => res.send("ok"), error => console.log("????"));
 
-      Promise.all(fakeDatabase.map(sub => webpush.sendNotification(
-        sub, JSON.stringify(notificationPayload) )))
+      Promise.all(fakeDatabase.map(sub => {
+        webpush.sendNotification(sub.subscription, JSON.stringify(notificationPayload))
+      }))
         .then(() => res.status(200).json({message: 'Newsletter sent successfully.'}))
         .catch(err => {
             console.error("Error sending notification, reason: ", err);

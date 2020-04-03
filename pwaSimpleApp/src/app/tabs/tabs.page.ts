@@ -2,6 +2,7 @@ import { Component, NgModule } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router"
 import { UserService } from '../services/user.service';
 import { SwPush } from '@angular/service-worker';
+import { NotificationsPushService } from '../services/notifications-push.service';
 
 
 /*
@@ -26,7 +27,8 @@ export class TabsPage {
 
   constructor(
     private userService: UserService,
-    private swPush : SwPush
+    private swPush : SwPush,
+    private notificationsPush : NotificationsPushService,
     /*public authFirebaseService: AuthFirebaseService*/
     ) {
     //this.profileService = navParams.get('ProfileService');
@@ -37,7 +39,36 @@ export class TabsPage {
     //firebase.auth().currentUser
 
 
-  
+      this.initNotifications(this.userService.getUser().id);
+  }
+
+  initNotifications(userId) {
+
+    if (this.swPush.isEnabled) {
+    console.log("wtf ok swpush");
+      this.swPush.requestSubscription({
+        serverPublicKey: VAPID_PUBLIC
+    })
+    .then(sub => {  
+      this.notificationsPush.sendSubscriptionToTheServer(sub, userId).then(res => {
+        console.log("Subscription done.");
+        
+        this.notificationsPush.sendNotifApero("Test message")
+        .then(res => console.log("ok"), error => {console.log(error.error)});
+
+      }, error => {console.log(error.error)});
+
+      /*
+      this.notificationsPush.sendSubscriptionToTheServer(sub).then(
+        ret => {
+          console.log("OK");
+        }
+      );*/
+    })
+    .catch(err => console.error("Could not subscribe to notifications", err));
+    } else {
+      console.log("SwPush not enabled on this computer.")
+    }
   }
 
 }

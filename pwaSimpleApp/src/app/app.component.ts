@@ -40,36 +40,6 @@ export class AppComponent {
     private notificationsPush : NotificationsPushService
   ) {
     this.initializeApp();
-    this.initNotifications();
-  }
-
-   initNotifications() {
-
-    if (this.swPush.isEnabled) {
-    console.log("wtf ok swpush");
-      this.swPush.requestSubscription({
-        serverPublicKey: VAPID_PUBLIC
-    })
-    .then(sub => {  
-      this.notificationsPush.sendSubscriptionToTheServer(sub).then(res => {
-        console.log("Subscription done.");
-        
-        this.notificationsPush.sendNotifApero("Test message")
-        .then(res => console.log("ok"), error => {console.log(error.error)});
-
-      }, error => {console.log(error.error)});
-
-      /*
-      this.notificationsPush.sendSubscriptionToTheServer(sub).then(
-        ret => {
-          console.log("OK");
-        }
-      );*/
-    })
-    .catch(err => console.error("Could not subscribe to notifications", err));
-    } else {
-      console.log("SwPush not enabled on this computer.")
-    }
   }
 
   initializeApp() {
