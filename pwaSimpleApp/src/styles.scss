@@ -3811,7 +3811,7 @@ button.dim:active {
   top: 3px;
 }
 button.btn-primary.dim {
-  box-shadow: inset 0px 0px 0px #16987e, 0px 5px 0px 0px #16987e, 0px 10px 5px #999999;
+  box-shadow: inset 0px 0px 0px #11537c, 0px 5px 0px 0px #11537c, 0px 10px 5px #999999;
 }
 button.btn-primary.dim:active {
   box-shadow: inset 0px 0px 0px #16987e, 0px 2px 0px 0px #16987e, 0px 5px 3px #999999;
@@ -12764,4 +12764,10 @@ body.md-skin {
     text-align: right;
     position: fixed;
     right: -1%;
+  }
+
+  .btn-very-large-dim {
+    width: fit-content;
+    height: 60px;
+    font-size: 42px;
   }
