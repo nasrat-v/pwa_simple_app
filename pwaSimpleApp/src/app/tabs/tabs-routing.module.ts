@@ -8,6 +8,10 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'home',
+        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+      },
+      {
         path: 'apero-list',
         loadChildren: () => import('../pages/apero-list/apero-list.module').then(m => m.AperoListPageModule)
       },
@@ -20,20 +24,16 @@ const routes: Routes = [
         loadChildren: () => import('../pages/apero-details/apero-details.module').then(m => m.AperoDetailsPageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'map',
+        loadChildren: () => import('../map/map.module').then(m => m.MapPageModule)
       },
       {
-        path: 'tab2/:lat/:lon',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'map/:lat/:lon',
+        loadChildren: () => import('../map/map.module').then(m => m.MapPageModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
-      },
-      {
-        path: 'tab4',
-        loadChildren: () => import('../tab4/tab4.module').then(m => m.Tab4PageModule)
+        path: 'settings',
+        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
       }
     ]
   },
@@ -42,56 +42,6 @@ const routes: Routes = [
     redirectTo: '/tabs/apero-list',
     pathMatch: 'full'
   }
-  
-  
-
-  
-  /*{
-    path: 'tabs',
-    component: TabsPage,
-    children: [
-      {
-        path: 'apero-list',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../pages/apero-list/apero-list.module').then(m => m.AperoListPageModule)
-          }
-        ]
-      },
-      {
-        path: 'tab2',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../tab2/tab2.module').then(m => m.Tab2PageModule)
-          }
-        ]
-      },
-      {
-        path: 'tab3',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../tab3/tab3.module').then(m => m.Tab3PageModule)
-          }
-        ]
-      },
-      {
-        path: '',
-        redirectTo: '/tabs/apero-list',
-        pathMatch: 'full'
-      }
-    ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/apero-list',
-    pathMatch: 'full'
-  }*/
 ];
 
 @NgModule({

@@ -16,6 +16,13 @@
                   </a>
               </div>
           </li>
+          <li [ngClass]="{ 'active' : tabsNavigationStatus.get('home').active }">
+            <a (click)="navigateToHome()">
+                <i class="fa fa-home"></i>
+                <span class="nav-label"> Home</span>
+                <span class="fa arrow"></span>
+            </a>             
+        </li>
           <li [ngClass]="{ 'active' : tabsNavigationStatus.get('aperoList').active }">
               <a (click)="navigateToAperoList()">
                   <i class="fa fa-angellist"></i>
@@ -38,10 +45,10 @@
               </a>
           </li>
           <li>
-              <a routerLink="/tabs/tab4" routerLinkActive="active">
-                <i class="fa fa-sign-out"></i> 
-                <span class="nav-label"> Logout</span>
-                <span class="fa arrow"></span>
+              <a (click)="logOut()">
+                  <i class="fa fa-sign-out"></i> 
+                  <span class="nav-label"> Logout</span>
+                  <span class="fa arrow"></span>
               </a>
           </li>
           <li class="unactive-link">
@@ -70,7 +77,7 @@
               <li>
                   <a href="index.html">Home</a>
               </li>
-              <li class="active">
+              <li class="active" *ngIf="!tabsNavigationStatus.get('home').active">
                   <strong>{{ activeTabName }}</strong>
               </li>
           </ol>

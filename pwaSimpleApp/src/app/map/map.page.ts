@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-//import { Plugins } from '@capacitor/core';
-//import { ToastController } from '@ionic/angular';
-import { GoogleMapsService } from '../services/google-maps.service';
 import { ActivatedRoute } from '@angular/router';
 
+import { GoogleMapsService } from '../services/google-maps.service';
+
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-map',
+  templateUrl: 'map.page.html',
+  styleUrls: ['map.page.scss']
 })
-export class Tab2Page implements OnInit {
+export class MapPage implements OnInit {
   lat: number;
   lng: number;
   address: string;
@@ -21,7 +20,6 @@ export class Tab2Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    // call get current location function on initializing
     let lat = this.activatedRoute.snapshot.paramMap.get('lat');
     let lon = this.activatedRoute.snapshot.paramMap.get('lon');
     if (lat && lon) {
@@ -32,7 +30,6 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  // Function to get the current geo position of the device
    private async getCurrentLocation() {
     this.googleMapsService.getCurrentLocation().then(
       location => {
@@ -41,7 +38,6 @@ export class Tab2Page implements OnInit {
       });
   }
 
-  // function to display the toast with location and dismiss button
   async presentToast() {
     /*const toast = await this.toastController.create({
       message: this.address,
@@ -57,7 +53,6 @@ export class Tab2Page implements OnInit {
     toast.present();*/
   }
 
-  // click function to display a toast message with the address
   onMarkerClick() {
     this.presentToast();
   }

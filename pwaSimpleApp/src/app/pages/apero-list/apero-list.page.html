@@ -1,6 +1,6 @@
 <header>
       <button class="btn btn-primary dim btn-very-large-dim" type="button" routerLink="/tabs/apero-details">
-          <i class="fa fa-money"></i>
+          <i class="fa fa-plus"></i>
           Create a new apero alert !
       </button>
     <title>All my apero alerts</title>
@@ -36,7 +36,7 @@
     <button [routerLink]="['/tabs/apero-details', apero.id]">
       {{ apero.host_user_name }}
     </button>
-    <button [routerLink]="['/tabs/tab2', apero.lat, apero.lon]">
+    <button [routerLink]="['/tabs/map', apero.lat, apero.lon]">
       show map
     </button>
     <div *ngFor="let user_id of apero.guests_id">

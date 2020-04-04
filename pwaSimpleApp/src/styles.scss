@@ -2892,6 +2892,11 @@ h5 {
   background-color: #3c4b5a;
   color: white;
 }
+.navbar-default .nav > li.active {
+  border-left: 4px solid #f8ac59;
+  background-color: #293846;
+  color: white;
+}
 
 .nav .open > a,
 .nav .open > a:hover,
@@ -10828,6 +10833,22 @@ body.md-skin {
   position: fixed;
   display: none;
 }
+.navbar-static-side {
+  z-index: 2001;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  max-width: 120px;
+}
+.wrapper-tabs {
+  position: fixed; 
+  top: 0%; 
+  left: 120px; 
+  height: 100%; 
+  width: 100%;
+  margin-left: 20px;
+  margin-top: 10px;
+}
 @media (min-width: 768px) {
   /*#page-wrapper {
     position: inherit;
@@ -10839,7 +10860,17 @@ body.md-skin {
     position: fixed;
     top: 0%;
     left: 0%;
+    max-width: 220px;
     width: 220px;
+  }
+  .wrapper-tabs {
+    position: fixed; 
+    top: 0%; 
+    left: 220px; 
+    height: 100%; 
+    width: 100%;
+    margin-left: 20px;
+    margin-top: 10px;
   }
   .navbar-top-links .dropdown-messages,
   .navbar-top-links .dropdown-tasks,
@@ -12748,16 +12779,6 @@ body.md-skin {
 
   .form-error {
     color: #ed5565;
-  }
-
-  .wrapper-tabs {
-    position: fixed; 
-    top: 0%; 
-    left: 220px; 
-    height: 100%; 
-    width: 100%;
-    margin-left: 20px;
-    margin-top: 10px;
   }
 
   .text-right {
