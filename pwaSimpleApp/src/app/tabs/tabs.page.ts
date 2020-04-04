@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router"
+import { Router } from "@angular/router"
 import { SwPush } from '@angular/service-worker';
 
 import { NotificationsPushService } from '../services/notifications-push.service';
 import { UserStorageService } from '../services/user-storage.service';
+import { TabNavigationStatus } from '../types/tabs-navigation.type';
 
 
 /*
@@ -14,7 +15,6 @@ import { UserStorageService } from '../services/user-storage.service';
 //const VAPID_PUBLIC = "BIoQ9r576sXiCYdmfmIDH2lOJ70mT_hDMv-2HxZahXriUrhLvAkAAbRxbFteazYHCl1DmRS0KEnEA5TjKeFJfbs"
 const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w"
 
-
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -24,25 +24,53 @@ const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1S
 export class TabsPage {
 
   public user = null;
-  private route: ActivatedRoute
-  private router: Router
+  public activeTabName = '';
+  public tabsNavigationStatus = new Map<string, TabNavigationStatus>();
 
-  constructor(
-    private userStorageService: UserStorageService,
-    private swPush : SwPush,
-    private notificationsPush : NotificationsPushService
-    ) {
-    //this.profileService = navParams.get('ProfileService');
-    //console.log('email  ' + this.profileService.getEmail);
-    //console.log('id : ' + authFirebaseService.getUSer().uid);
-
-    //console.log("user !!" + authFirebaseService.getFirebaseAuth().auth.currentUser.uid);
-    //firebase.auth().currentUser
+  constructor(private userStorageService: UserStorageService
+    , private swPush: SwPush
+    , private notificationsPush: NotificationsPushService
+    , private router: Router) {
+    
+      this.initTabsNavigationStatus();
       this.user = this.userStorageService.getUser();
-
       if (this.user.id != null) {
         this.initNotifications(this.user.id);
       }
+  }
+
+  private initTabsNavigationStatus() {
+    this.tabsNavigationStatus.set("aperoList", { name: "Apero's list", active: false });
+    this.tabsNavigationStatus.set("map", { name: "Map", active: false });
+    this.tabsNavigationStatus.set("settings", { name: "Settings", active: false });
+  }
+
+  private setTabActive(tabValue: TabNavigationStatus, tabKey: string) {
+    tabValue.active = true;
+    this.tabsNavigationStatus.forEach((value: TabNavigationStatus, key: string) => {
+      if (tabKey != key) {
+        value.active = false;
+      }
+    });
+    this.activeTabName = tabValue.name;
+  }
+
+  private navigateToTab (key: string, route: string) {
+    var tab = this.tabsNavigationStatus.get(key);
+    this.setTabActive(tab, key);
+    this.router.navigate([route]);
+  }
+
+  public navigateToAperoList() {
+    this.navigateToTab('aperoList', '/tabs/apero-list');
+  }
+
+  public navigateToMap() {
+    this.navigateToTab('map', '/tabs/tab2');
+  }
+
+  public navigateToSettings() {
+    this.navigateToTab('settings', '/tabs/tab3');
   }
 
   public initNotifications(userId) {

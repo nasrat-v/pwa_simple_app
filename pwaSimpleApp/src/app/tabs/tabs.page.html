@@ -16,22 +16,22 @@
                   </a>
               </div>
           </li>
-          <li>
-              <a routerLink="/tabs/apero-list" routerLinkActive="active">
+          <li [ngClass]="{ 'active' : tabsNavigationStatus.get('aperoList').active }">
+              <a (click)="navigateToAperoList()">
                   <i class="fa fa-angellist"></i>
                   <span class="nav-label"> Apero's list</span>
                   <span class="fa arrow"></span>
               </a>             
           </li>
-          <li>
-              <a routerLink="/tabs/tab2" routerLinkActive="active">
+          <li [ngClass]="{ 'active' : tabsNavigationStatus.get('map').active }">
+              <a (click)="navigateToMap()">
                   <i class="fa fa-globe"></i>
                   <span class="nav-label"> Map</span>
                   <span class="fa arrow"></span>
               </a>
           </li>
-          <li>
-              <a routerLink="/tabs/tab3" routerLinkActive="active">
+          <li [ngClass]="{ 'active' : tabsNavigationStatus.get('settings').active }">
+              <a (click)="navigateToSettings()">
                   <i class="fa fa-cog"></i> 
                   <span class="nav-label"> Settings</span>
                   <span class="fa arrow"></span>
@@ -39,7 +39,7 @@
           </li>
           <li>
               <a routerLink="/tabs/tab4" routerLinkActive="active">
-                <i class="fa fa-external-link"></i> 
+                <i class="fa fa-sign-out"></i> 
                 <span class="nav-label"> Logout</span>
                 <span class="fa arrow"></span>
               </a>
@@ -50,4 +50,40 @@
       </ul>
   </div>
 </nav>
-<router-outlet></router-outlet>
+  <div class="wrapper-tabs">
+    <div class="row border-bottom">
+      <nav class="navbar navbar-static-top" role="navigation">
+          <div class="navbar-header">
+              <a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
+          </div>
+          <ul class="nav navbar-top-links text-right" style="margin-top: 15px;">
+              <li>
+                  <span class="m-r-sm text-muted welcome-message">Welcome to App-Heraut.</span>
+            </li>
+          </ul>
+      </nav>
+    </div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+          <h2>{{ activeTabName }}</h2>
+          <ol class="breadcrumb">
+              <li>
+                  <a href="index.html">Home</a>
+              </li>
+              <li class="active">
+                  <strong>{{ activeTabName }}</strong>
+              </li>
+          </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight" style="margin-left: 5px; margin-top: 10px; margin-right: 270px;">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="footer" style="margin-bottom: 10px;">
+        <div>
+            <strong>Copyright</strong> App-Heraut &copy; 2020
+        </div>
+    </div>
+</div>
