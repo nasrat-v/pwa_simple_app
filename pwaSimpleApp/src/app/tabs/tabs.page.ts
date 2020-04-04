@@ -85,8 +85,7 @@ export class TabsPage {
       this.notificationsPush.sendSubscriptionToTheServer(sub, userId).then(res => {
         console.log("Subscription done.");
         
-        this.notificationsPush.sendNotifApero("Test message")
-        .then(res => console.log("ok"), error => {console.log(error.error)});
+        //this.notificationsPush.sendNotifApero("Test message").then(res => console.log("ok"), error => {console.log(error.error)});
 
       }, error => {console.log(error.error)});
 

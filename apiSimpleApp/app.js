@@ -9,6 +9,9 @@ const methodOverride = require('method-override');
 var app = express();
 var client = redis.createClient();
 
+var pushNotifRouter = require('./notifications_push');
+app.use('/', pushNotifRouter.notifRouter);
+
 const secret = 'appheraut_some_secret';
 const statusSuccess = 200;
 const statusCreated = 201;
@@ -28,7 +31,8 @@ app.use(expressJWT({ secret: secret})
   .unless(
       { path: [
           '/addUser',
-          '/logIn'
+          '/logIn',
+          '/joinApero'
       ]}
 ));
   
@@ -140,6 +144,7 @@ function notifyUsers(newApero) {
         client.hgetall("user:" + users[key], function(err, user) {
           distance = measure(newApero.lat, newApero.lon, user.lat, user.lon)
           if (distance < 20000) {
+            pushNotifRouter.sendNotif(user.id, newApero.id);
             //ici il faut envoyer newAperoId à user 
           }
         })
@@ -255,12 +260,12 @@ app.delete("/deleteApero", (req, res) => {
   })  
 })
 
-app.put("/joinApero", (req, res) => {
+app.get("/joinApero", (req, res) => {
 
-  client.rpush("guests_id:" + req.body.guests_id, req.query.user_id, function(err,rely) { 
+  client.rpush("guests_id:" + req.query.apero_id, req.query.user_id, function(err,rely) { 
     client.hgetall("user:" + req.query.user_id, function(err, user) {
-      client.rpush("aperos_id:" + user.aperos_id, req.body.id, function(err, reply) {
-        return res.send({"response": "OK"});
+      client.rpush("aperos_id:" + user.aperos_id, req.query.apero_id, function(err, reply) {
+        return res.send("Vous venez de rejoindre l'apéro. Buvez avec modération");
       })
     })
   })
