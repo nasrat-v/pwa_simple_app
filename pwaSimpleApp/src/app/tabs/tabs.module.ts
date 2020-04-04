@@ -9,7 +9,6 @@ import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   imports: [
-    //IonicModule,
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,

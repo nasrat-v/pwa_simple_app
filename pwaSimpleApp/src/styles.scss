@@ -2870,6 +2870,7 @@ h5 {
   font-weight: 600;
 }
 .nav > li > a {
+  background-color: #3c4b5a;
   color: #a7b1c2;
   font-weight: 600;
   padding: 14px 20px 14px 25px;
@@ -2885,6 +2886,13 @@ h5 {
   background-color: #293846;
   color: white;
 }
+
+.navbar-default .nav > li.unactive-link > a:hover,
+.navbar-default .nav > li.unactive-link > a:focus {
+  background-color: #3c4b5a;
+  color: white;
+}
+
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
@@ -2993,6 +3001,7 @@ h5 {
 .nav-header {
   padding: 33px 25px;
   background: url("assets/patterns/header-profile.png") no-repeat;
+  height: 150px;
 }
 .pace-done .nav-header {
   transition: all 0.5s;
@@ -10825,7 +10834,9 @@ body.md-skin {
   }
   .navbar-static-side {
     z-index: 2001;
-    position: absolute;
+    position: fixed;
+    top: 0%;
+    left: 0%;
     width: 220px;
   }
   .navbar-top-links .dropdown-messages,

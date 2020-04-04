@@ -1,23 +1,53 @@
-<!--<div>
-
-  <div slot="bottom">
-    <button tab="apero-list">
-      <label>Apero's list</label>
-    </button>
-
-    <button tab="tab2">
-      <label>Map</label>
-    </button>
-
-    <button tab="tab3">
-      <label>Settings</label>
-    </button>
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+      <ul class="nav metismenu" id="side-menu">
+          <li class="nav-header">
+              <div> 
+                  <span>
+                      <img alt="image" class="img-circle" src="../../assets/icons/appheraut.png" style="max-width: 50px;"/>
+                  </span>
+                  <a>
+                      <span class="clear"> 
+                          <span class="block m-t-xs"> 
+                              <strong class="font-bold">{{ user.user_name }}</strong>
+                          </span> 
+                          <span class="text-muted text-xs block">{{ user.email }}</span> 
+                      </span> 
+                  </a>
+              </div>
+          </li>
+          <li>
+              <a routerLink="/tabs/apero-list" routerLinkActive="active">
+                  <i class="fa fa-angellist"></i>
+                  <span class="nav-label"> Apero's list</span>
+                  <span class="fa arrow"></span>
+              </a>             
+          </li>
+          <li>
+              <a routerLink="/tabs/tab2" routerLinkActive="active">
+                  <i class="fa fa-globe"></i>
+                  <span class="nav-label"> Map</span>
+                  <span class="fa arrow"></span>
+              </a>
+          </li>
+          <li>
+              <a routerLink="/tabs/tab3" routerLinkActive="active">
+                  <i class="fa fa-cog"></i> 
+                  <span class="nav-label"> Settings</span>
+                  <span class="fa arrow"></span>
+              </a>
+          </li>
+          <li>
+              <a routerLink="/tabs/tab4" routerLinkActive="active">
+                <i class="fa fa-external-link"></i> 
+                <span class="nav-label"> Logout</span>
+                <span class="fa arrow"></span>
+              </a>
+          </li>
+          <li class="unactive-link">
+              <a style="height: 10000px"></a>
+          </li>
+      </ul>
   </div>
-
-</div>-->
-<nav>
-  <a routerLink="/tabs/apero-list" routerLinkActive="active">Apero's list</a>
-  <a routerLink="/tabs/tab2" routerLinkActive="active">Map</a>
-  <a routerLink="/tabs/tab3" routerLinkActive="active">Settings</a>
 </nav>
 <router-outlet></router-outlet>

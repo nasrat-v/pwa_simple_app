@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from "@angular/router"
 
 import { User } from '../types/user.type';
 
@@ -9,7 +10,7 @@ const USER_KEY = 'current-user';
 })
 export class UserStorageService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   public removeUser () {
     localStorage.removeItem(USER_KEY);
@@ -21,6 +22,11 @@ export class UserStorageService {
   }
 
   public getUser(): User {
-    return JSON.parse(localStorage.getItem(USER_KEY));
+    var user: User = JSON.parse(localStorage.getItem(USER_KEY));
+
+    if (user == null || user == undefined) {
+      this.router.navigate(['/']);
+    }
+    return user;
   }
 }

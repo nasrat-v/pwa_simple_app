@@ -1,5 +1,5 @@
-import { Component, NgModule } from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router"
+import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from "@angular/router"
 import { SwPush } from '@angular/service-worker';
 
 import { NotificationsPushService } from '../services/notifications-push.service';
@@ -23,15 +23,14 @@ const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1S
 
 export class TabsPage {
 
+  public user = null;
   private route: ActivatedRoute
   private router: Router
-  //private profileService: ProfileService;
 
   constructor(
     private userStorageService: UserStorageService,
     private swPush : SwPush,
-    private notificationsPush : NotificationsPushService,
-    /*public authFirebaseService: AuthFirebaseService*/
+    private notificationsPush : NotificationsPushService
     ) {
     //this.profileService = navParams.get('ProfileService');
     //console.log('email  ' + this.profileService.getEmail);
@@ -39,12 +38,14 @@ export class TabsPage {
 
     //console.log("user !!" + authFirebaseService.getFirebaseAuth().auth.currentUser.uid);
     //firebase.auth().currentUser
+      this.user = this.userStorageService.getUser();
 
-
-      this.initNotifications(this.userStorageService.getUser().id);
+      if (this.user.id != null) {
+        this.initNotifications(this.user.id);
+      }
   }
 
-  initNotifications(userId) {
+  public initNotifications(userId) {
 
     if (this.swPush.isEnabled) {
     console.log("wtf ok swpush");
