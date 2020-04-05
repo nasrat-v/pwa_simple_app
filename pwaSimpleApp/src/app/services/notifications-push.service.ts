@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { NEVER } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 /* {"publicKey":"BBpIBZLDwUAAiipbW0v4ecSdAdXwYa0crHkub0yAV8KJeMqydsAf8jP_ApsBMa1xT5h8N15A147_esszZOUrNt4","privateKey":"BOaRorKIO-N72X2UC8ONMRrhAQreuakuBt65aoNDFeg"} */
@@ -33,7 +34,7 @@ export class NotificationsPushService {
       subscription : subscription
     }
     return new Promise((resolve, reject) =>{
-      this.http.post<CustomSubscription>("http://localhost:3000/subscription", data).toPromise().then(
+      this.http.post<CustomSubscription>(environment.apiURL + "/subscription", data).toPromise().then(
         apero => {
           resolve("ok test de ouf");
         },
@@ -51,7 +52,7 @@ export class NotificationsPushService {
     }
     console.log("newMsg =", newMsg);
     return new Promise((resolve, reject) =>{
-      this.http.post<NotifMessage>("http://127.0.0.1:3000/sendNotification", newMsg).toPromise().then(
+      this.http.post<NotifMessage>(environment.apiURL + "/sendNotification", newMsg).toPromise().then(
         apero => {
           resolve("Notif sent");
         },

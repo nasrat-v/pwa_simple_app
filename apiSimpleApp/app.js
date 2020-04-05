@@ -20,6 +20,22 @@ const statusForbidden = 403;
 const statusNotFound = 404;
 const statusInternalServerError = 500;
 
+var fs = require('fs'); 
+var http = require('http'); 
+var https = require('https'); 
+var privateKey  = fs.readFileSync('ssl/server.key', 'utf8'); 
+var certificate = fs.readFileSync('ssl/server.crt', 'utf8');  
+var credentials = {key: privateKey, cert: certificate}; 
+//var express = require('express'); 
+//var app = express();  
+// your express configuration here  
+var httpServer = http.createServer(app); 
+var httpsServer = https.createServer(credentials, app);  
+httpServer.listen(8080); 
+httpsServer.listen(3000, () => {
+  console.log("listen on port 3000")
+})
+
 client.on('connect', function() {
   console.log('connected');
 });
@@ -144,6 +160,7 @@ function notifyUsers(newApero) {
         client.hgetall("user:" + users[key], function(err, user) {
           distance = measure(newApero.lat, newApero.lon, user.lat, user.lon)
           if (distance < 20000) {
+            console.log("distance ", distance);
             pushNotifRouter.sendNotif(user.id, newApero.id);
             //ici il faut envoyer newAperoId à user 
           }
@@ -276,73 +293,6 @@ app.get("/joinApero", (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-app.delete('/deleteString', (req, res) => {
-  client.del('framework', function(err, reply) {
-    if (reply == 1)
-      return res.send('deleted');
-    else
-      return res.send('string not exist');
-  });
-});
-
-app.post('/postObject', (req, res) => {
-  client.hmset('frameworks', {
-    'javascript': 'AngularJS',
-    'css': 'Bootstrap',
-    'node': 'Express'
-});
-  return res.send('Received  an object to store');
-});
-
-app.get('/getObject', (req, res) => {
-  client.hgetall('frameworks', function(err, object) {
-    console.log(object);
-    return res.send(object);
-  });
-});
-
-app.post('/postList', (req, res) => {
-  client.rpush(['frameworksList', 'angularjs', 'backbone'], function(err, reply) {
-    console.log(reply); //prints 2
-});
-  return res.send('Received  a list to store');
-});
-
-app.get('/getList', (req, res) => {
-  client.exists('frameworksList', function(err, reply) {
-    if (reply === 1) {
-        console.log('exists');
-        client.lrange('frameworksList', 0, -1, function(err, reply) {
-          console.log(reply); // ['angularjs', 'backbone']
-          return res.send(reply);
-        });
-    } else {
-        console.log('doesn\'t exist');
-        return res.send('doesn\'t exist');
-    }
-});
-  
-});
-
-
-
-
-
-app.put('/', (req, res) => {
-  return res.send('Received a PUT HTTP method');
-});
-app.delete('/', (req, res) => {
-  return res.send('Received a DELETE HTTP method');
-});
-
-app.listen(3000, () =>
+/*app.listen(3000, () =>
   console.log(`Example app listening on port 3000!`)
-);
+);*/
