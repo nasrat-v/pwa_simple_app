@@ -21,7 +21,6 @@ export class AperoListPage implements OnInit {
     this.aperoService.getAperos().then(
       aperos => {
         this.aperos = aperos;
-        this.aperos[0].guests_id.push("1");
         console.log(this.aperos)
       }
     );
