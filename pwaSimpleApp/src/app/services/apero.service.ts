@@ -6,15 +6,17 @@ import { UserStorageService } from './user-storage.service';
 
 
 export interface Apero {
-  id?: number
-  id_host:  number
+  id?: number,
+  id_host: number,
   host_user_name: string,
-  lat:             number,
-  lon:             number,
-  address:          string,
-  nb_slots:         string,
-  guests_id:          string[],
-  date:            Date;
+  libelle: string,
+  description: string,
+  lat: number,
+  lon: number,
+  address: string,
+  nb_slots: string,
+  guests_id: string[],
+  date: Date
 }
 
 @Injectable({

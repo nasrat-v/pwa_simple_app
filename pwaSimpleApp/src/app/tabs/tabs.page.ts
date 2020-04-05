@@ -6,6 +6,7 @@ import { NotificationsPushService } from '../services/notifications-push.service
 import { UserStorageService } from '../services/user-storage.service';
 import { UserService } from '../services/user.service';
 import { TabNavigationStatus } from '../types/tabs-navigation.type';
+import { runInThisContext } from 'vm';
 
 const VAPID_PUBLIC = "BKLDlJxXBZor_1f2hZNWAF7vZQ6GpBO6nB1dgCaDtNcrtipZkBcZn73r1Sa85qmoo7JV0-3mfYGB6ZOy2p1KP7w"
 
@@ -28,6 +29,7 @@ export class TabsPage {
     , private router: Router) {
     
       this.initTabsNavigationStatus();
+      this.navigateToHome();
       this.user = this.userStorageService.getUser();
       if (this.user.id != null) {
         this.initNotifications(this.user.id);

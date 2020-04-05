@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-//import { Observable } from 'rxjs';
+
 import { AperoService, Apero } from 'src/app/services/apero.service';
 import { UserService } from 'src/app/services/user.service';
-import { resolve } from 'url';
-import { reject } from 'q';
-//import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
-//import { FcmService } from 'src/app/services/fcm.service';
-
-
 
 @Component({
   selector: 'app-apero-list',
@@ -17,15 +11,10 @@ import { reject } from 'q';
 export class AperoListPage implements OnInit {
 
   public aperos: Apero[];
+  public today = new Date();
 
-  constructor(
-    private aperoService: AperoService,
-    private userService: UserService
-    
-    //public authFirebaseService: AuthFirebaseService,
-    //public fcm: FcmService
-    ) { 
-    
+  constructor(private aperoService: AperoService
+    , private userService: UserService) {
   }
 
   async ngOnInit() {
@@ -35,6 +24,14 @@ export class AperoListPage implements OnInit {
         console.log(this.aperos)
       }
     );
+  }
+
+  public isToday(dateStr: string) {
+    var date = new Date(dateStr);
+
+    return this.today.getDate() == date.getDate() &&
+            this.today.getMonth() == date.getMonth() &&
+            this.today.getFullYear() == date.getFullYear();
   }
 
   getUserNameById(user_id: string) {

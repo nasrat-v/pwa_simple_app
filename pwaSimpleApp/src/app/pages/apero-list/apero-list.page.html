@@ -1,3 +1,4 @@
+
 <header>
       <button class="btn btn-primary dim btn-very-large-dim" type="button" routerLink="/tabs/apero-details">
           <i class="fa fa-plus"></i>
@@ -6,41 +7,47 @@
     <title>All my apero alerts</title>
 </header>
 
-<!--<ion-card>
-  <ion-card-header>
-    <ion-card-title>Grant Permission</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-button (click)="getPermission()">Grant Permission</ion-button>
-  </ion-card-content>
-</ion-card>
-
-<ion-card>
-    <ion-card-header>
-      <ion-card-title>Subscribe to Topic</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button (click)="fcm.sub('discounts')">Subscribe to Topic</ion-button>
-    </ion-card-content>
-  </ion-card>-->
-
 <content>
-
-    <!--<ion-fab vertical="bottom" horizontal="begin" slot="fixed">
-      <ion-fab-button (click)="joinApero()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>-->
    
-  <div *ngFor="let apero of aperos">
-    <button [routerLink]="['/tabs/apero-details', apero.id]">
-      {{ apero.host_user_name }}
-    </button>
-    <button [routerLink]="['/tabs/map', apero.lat, apero.lon]">
-      show map
-    </button>
-    <div *ngFor="let user_id of apero.guests_id">
-      {{user_id}}      
+<div style="overflow: auto; height: 800px;">
+  <div *ngFor="let apero of aperos" style="margin-top: 20px;">
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-lg-4">
+          <div class="ibox" [routerLink]="['/tabs/apero-details', apero.id]">
+              <div class="ibox-title">
+                  <span class="label label-primary pull-right" *ngIf="isToday(apero.date)">
+                    <i class="fa fa-angellist"></i>
+                    TODAY
+                  </span>
+                  <h3>{{ apero.libelle }}</h3>
+              </div>
+              <div class="ibox-content">
+                  <div class="team-members" *ngFor="let guest of aperos.guests_id">
+                      <a><img class="img-circle" src="../../../assets/icons/appheraut.png"></a>
+                  </div>
+                  <h4>Info about {{ apero.host_user_name }}'s apero :</h4>
+                  <p style="margin: 15px;">
+                      {{ apero.description }}
+                  </p>
+                  <div class="row  m-t-sm" style="margin-top: 20px;">
+                      <div class="col-sm-4">
+                          <div class="font-bold">DATE</div>
+                          {{ apero.date | date: 'dd/MM/yyyy'}}
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="font-bold">FREE SLOTS</div>
+                          {{ apero.nb_slots - apero.guests_id.length }}
+                      </div>
+                      <div class="col-sm-4 text-right" [routerLink]="['/tabs/map', apero.lat, apero.lon]">
+                          <div class="font-bold">ADDRESS</div>
+                          {{ apero.address }} <i class="fa fa-level-up text-navy"></i>
+                      </div>
+                  </div>
+  
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

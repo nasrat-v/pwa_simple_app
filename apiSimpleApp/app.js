@@ -161,6 +161,8 @@ app.post("/addApero", (req, res) => {
       "id": id,
       "id_host": parseInt(req.body.id_host),
       "host_user_name": req.body.host_user_name,
+      "libelle": req.body.libelle,
+      "description": req.body.description,
       "lat": req.body.lat,
       "lon": req.body.lon,
       "address": req.body.address,
@@ -225,11 +227,12 @@ app.get("/getApero", (req, res) => {
 })
 
 app.put("/updateApero", (req, res) => {
-
   newApero = {
     "id": parseInt(req.body.id),
     "id_host": parseInt(req.body.id_host),
-    "host_email": req.body.host_email,
+    "host_user_name": req.body.host_user_name,
+    "libelle": req.body.libelle,
+    "description": req.body.description,
     "lat": req.body.lat,
     "lon": req.body.lon,
     "address": req.body.address,
@@ -239,7 +242,7 @@ app.put("/updateApero", (req, res) => {
   }
   client.hmset("apero:" + req.body.id, newApero, function(err, reply) {
     return res.send(newApero);
-  })
+  });
 })
 
 app.delete("/deleteApero", (req, res) => {

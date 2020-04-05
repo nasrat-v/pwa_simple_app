@@ -1,54 +1,80 @@
 <header>
-      <title>Apero's details</title>
-  </header>   
-  
-  <content padding>   
-    <!--<item>-->
-      <label position="stacked">Date</label>
-      <input type="date" [(ngModel)]="apero.date" min="{{today}}" placeholder="{{today}}" max="2030-01-01">
-    <!--</item>-->
+    <title>Apero's details</title>
+</header>   
 
-    <!--<item>-->
-        <label position="stacked">Number of guests</label>
-        <input [(ngModel)]="apero.nb_slots">
-    <!--</item>-->
+<div>
+  <content padding>
 
-    <label position="stacked">Address</label>
-    <input [(ngModel)]="apero.address" ngx-google-places-autocomplete [options]=options #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+    <div class="form-group" style="max-width: 300px;">
+      <label>Apero name</label>
+      <input class="form-control" type="text" [(ngModel)]="apero.libelle" 
+              placeholder="Enter your apero name" (change)="resetError()">
+      <div *ngIf="libelleError" class="invalid-feedback">
+          <p class="form-error">You should enter a name</p>
+      </div>
+    </div>
 
-    <!--<item>-->
-        <label position="stacked">Guests: </label>
-        <div *ngFor="let guest of apero.guests_id">
-          {{ guest }}
-        </div>
-    <!--</item>-->
+    <div class="form-group" style="max-width: 300px;">
+      <label>Description</label>
+      <textarea class="form-control" type="text" rows="5" cols="60" [(ngModel)]="apero.description" 
+                placeholder="Write a quick description" (change)="resetError()"></textarea>
+      <div *ngIf="descriptionError" class="invalid-feedback">
+          <p class="form-error">You should enter a description</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <div class="input-group date">
+          <span class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+          </span>
+          <input class="form-control" style="max-width: 260px;" type="date" 
+                  [ngModel]="apero.date | date:'yyyy-MM-dd'" 
+                  min="{{today}}" max="2030-01-01" (change)="dateChange($event.target.value)">
+      </div>
+    </div>
+
+    <div class="form-group" style="max-width: 300px;">
+      <label>Number of guests</label>
+      <input class="form-control" type="number" min="1" max="100" [(ngModel)]="apero.nb_slots" 
+              placeholder="Enter number of guests" (change)="resetError()">
+      <div *ngIf="numberGuestError" class="invalid-feedback">
+          <p class="form-error">Guest number must be between 1 and 100</p>
+      </div>
+    </div>
+
+    <div class="form-group" style="max-width: 300px;">
+      <label>Address</label>
+      <input class="form-control" type="text" 
+              [(ngModel)]="apero.address" placeholder="Enter a location"
+              ngx-google-places-autocomplete [options]=options #placesRef="ngx-places"
+              (onAddressChange)="handleAddressChange($event)" (change)="resetError()">
+              
+      <div *ngIf="addressError" class="invalid-feedback">
+          <p class="form-error">Invalid address</p>
+      </div>
+    </div>
    
   </content>
-   
-  <footer *ngIf="apero.id==null">
-    <!--<row no-padding text-center>-->
-        <!--<col size="12">-->
-        <button vertical="bottom" horizontal="end" fill="solid" color="primary" (click)="addApero()">
-          <!--<icon name="checkmark" slot="start"></icon>-->
-          Add Apero
-        </button>
-        <!--</col>-->
-    <!--</row>-->
+
+  <footer *ngIf="apero.id==null" style="margin-top: 25px;">
+    <button class="btn btn-primary dim btn-very-large-dim" type="button" (click)="addApero()">
+      <i class="fa fa-check"></i>
+      Add apero
+    </button>
   </footer>
    
-  <footer *ngIf="apero.id!==null">
-    <!--<row no-padding text-center>-->
-      <!--<col size="6">-->
-        <button fill="solid" color="danger" (click)="deleteApero()">
-          <!--<icon name="trash" slot="start"></icon>-->
-          Delete
-        </button>
-      <!--</col>-->
-      <!--<col size="6">-->
-        <button fill="solid" color="primary" (click)="updateApero()">
-          <!--<icon name="save" slot="start"></icon>-->
-          Update
-        </button>
-      <!--</col>-->
-    <!--</row>-->
+  <footer *ngIf="apero.id!==null" style="margin-top: 25px;">
+      <button class="btn btn-danger dim btn-very-large-dim" style="margin-right: 10px;" 
+              type="button" (click)="deleteApero()">
+        <i class="fa fa-remove"></i>
+        Delete apero
+      </button>
+      <button class="btn btn-info dim btn-very-large-dim" style="margin-left: 10px;" 
+              type="button" (click)="updateApero()">
+        <i class="fa fa-remove"></i>
+        Update apero
+      </button>
   </footer>
+</div>

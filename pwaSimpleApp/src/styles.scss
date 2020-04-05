@@ -12792,3 +12792,24 @@ body.md-skin {
     height: 60px;
     font-size: 42px;
   }
+
+  .beSmaller {
+    margin-left: 5px; 
+    margin-top: 10px; 
+    margin-right: 270px;
+  }
+  @media (max-width: 768px) {
+    .beSmaller {
+      margin-left: 5px; 
+      margin-top: 10px; 
+      margin-right: 150px;
+    }
+    
+  }
+  @media (max-width: 420px) {
+    .btn-very-large-dim {
+      width: 120px;
+      height: 60px;
+      font-size: 10px;
+    }
+  }

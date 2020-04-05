@@ -18,7 +18,6 @@ import { GooglePlaceModule } from "ngx-google-places-autocomplete";
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule,
     AppRoutingModule, 
     HttpClientModule,
     GooglePlaceModule,

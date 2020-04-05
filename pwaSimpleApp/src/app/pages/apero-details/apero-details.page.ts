@@ -1,16 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { ToastController } from '@ionic/angular';
+
 import { Apero, AperoService } from 'src/app/services/apero.service';
 import { UserStorageService } from 'src/app/services/user-storage.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-//import {} from '@types/googlemaps';
 
-//import { GoogleMapsService } from 'src/app/services/google-maps.service';
-//import { Plugins } from '@capacitor/core';
-//import { AuthFirebaseService } from 'src/app/services/auth-firebase.service';
+declare var $: any;
 
 @Component({
   selector: 'app-apero-details',
@@ -18,6 +15,11 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
   styleUrls: ['./apero-details.page.scss'],
 })
 export class AperoDetailsPage implements OnInit {
+
+  libelleError = false;
+  descriptionError = false;
+  numberGuestError = false;
+  addressError = false;
   lat: number;
   lng: number;
   address: string;
@@ -26,30 +28,30 @@ export class AperoDetailsPage implements OnInit {
     componentRestrictions: { country: 'FR' }
     };
 
-    today :string = new Date().toISOString().substring(0, 10);
+  today :string = new Date().toISOString().substring(0, 10);
 
   apero: Apero = {
     id: null,
-    id_host:         null,
+    id_host: null,
     host_user_name: '',
-    lat:             null,
-    lon:             null,
-    address:         '',
-    nb_slots:        '',
-    guests_id:          [],
-    date:            null
+    libelle: '',
+    description: '',
+    lat: null,
+    lon: null,
+    address: '',
+    nb_slots: '',
+    guests_id: [],
+    date: null
   };
 
-  constructor(
-              private userStorageService: UserStorageService,
-              private activatedRoute: ActivatedRoute, 
-              private aperoService: AperoService,
-              private googleMapsService: GoogleMapsService,
-              private router: Router
-              ) { }
+  constructor(private userStorageService: UserStorageService
+    , private activatedRoute: ActivatedRoute
+    , private aperoService: AperoService
+    , private googleMapsService: GoogleMapsService
+    , private router: Router) { }
 
   ngOnInit() {
-    console.log(this.today);
+    this.apero.date = new Date();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.aperoService.getApero(id).then(
@@ -60,22 +62,48 @@ export class AperoDetailsPage implements OnInit {
       );
     }
   }
- 
-  addApero() {
+  
+  public dateChange(date: Date) {
+    this.apero.date = date;
+  }
+
+  public resetError() {
+    this.libelleError = false;
+    this.descriptionError = false;
+    this.numberGuestError = false;
+    this.addressError = false;
+  }
+
+  public checkInput() {
+    if (this.apero.libelle == null || this.apero.libelle == '') {
+      this.libelleError = true;
+      return false;
+    }
+    if (this.apero.description == null || this.apero.description == '') {
+      this.descriptionError = true;
+      return false;
+    }
     if (isNaN(parseInt(this.apero.nb_slots)) || parseInt(this.apero.nb_slots) <= 0 || parseInt(this.apero.nb_slots) > 100) {
-      console.log("guest number must be between 1 and 100");
+      this.numberGuestError = true;
+      return false;
+    }
+    if (this.apero.address == null || this.apero.address === '') {
+      this.addressError = true;
+      return false;
+    }
+    return true;
+  }
+ 
+  public addApero() {
+    if (!this.checkInput()) {
       return;
     }
     this.googleMapsService.getGeoLocation(this.apero.address).toPromise().then(
-      location => {
-        if (location == null) {
-          console.log("invalid address");
-          return;
-        }
-        console.log(location.lat);
-        console.log(location.lon);
+      (location) => {
         this.apero.id_host = this.userStorageService.getUser().id;
         this.apero.host_user_name = this.userStorageService.getUser().user_name;
+        this.apero.libelle = this.apero.libelle;
+        this.apero.description = this.apero.description;
         this.apero.lat = location.lat;
         this.apero.lon = location.lon;
         this.apero.address = this.apero.address;
@@ -85,10 +113,10 @@ export class AperoDetailsPage implements OnInit {
         this.aperoService.addApero(this.apero).then(
           ret => {
             this.router.navigateByUrl('tabs/apero-list');
-          }
-        );
-      }
-    )      
+          });
+      }, (err) => {
+        this.addressError = true;
+      });
   }
  
   async deleteApero() {
@@ -100,29 +128,28 @@ export class AperoDetailsPage implements OnInit {
   }
  
   async updateApero() {
-    if (isNaN(parseInt(this.apero.nb_slots)) || parseInt(this.apero.nb_slots) <= 0 || parseInt(this.apero.nb_slots) > 100) {
-      console.log("guest number must be between 1 and 100");
+    if (!this.checkInput()) {
       return;
     }
     this.googleMapsService.getGeoLocation(this.apero.address).toPromise().then(
       location => {
-        if (location == null) {
-          console.log("invalid address");
-          return;
-        }
-        this.apero.nb_slots = this.apero.nb_slots;
-        this.apero.date = this.apero.date;
+        this.apero.libelle = this.apero.libelle;
+        this.apero.description = this.apero.description;
         this.apero.lat = location.lat;
         this.apero.lon = location.lon;
+        this.apero.address = this.apero.address;
+        this.apero.nb_slots = this.apero.nb_slots;
+        this.apero.date = this.apero.date;
         this.aperoService.updateApero(this.apero).then(
           res => {
             this.router.navigateByUrl('tabs/apero-list');
-          }
-        );
-      })
+          });
+      }, (err) => {
+        this.addressError = true;
+      });
   }
  
-  showToast(msg) {
+  public showToast(msg) {
     /*this.toastCtrl.create({
       message: msg,
       duration: 2000
@@ -132,6 +159,7 @@ export class AperoDetailsPage implements OnInit {
   @ViewChild("placesRef", null) placesRef : GooglePlaceDirective;
     
         public handleAddressChange(address: Address) {
-          this.apero.address = address.formatted_address
+          this.apero.address = address.formatted_address;
+          this.resetError();
     }
 }
