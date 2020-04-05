@@ -12,13 +12,15 @@
 
       <form class="m-t" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-              <input type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'has-error': submitted && getForm().email.errors }" (change)="resetError()"/>
+              <label for="emailInput">Email</label>
+              <input id="emailInput" type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'has-error': submitted && getForm().email.errors }" (change)="resetError()"/>
               <div *ngIf="submitted && getForm().email.errors" class="invalid-feedback">
                   <p class="form-error" *ngIf="getForm().email.errors.required">Email is required</p>
               </div>
           </div>
           <div class="form-group">
-              <input type="password" class="form-control" placeholder="Password" formControlName="password" [ngClass]="{ 'has-error': submitted && getForm().password.errors }" (change)="resetError()"/>
+              <label for="passwordInput">Password</label>
+              <input id="passwordInput" type="password" class="form-control" placeholder="Password" formControlName="password" [ngClass]="{ 'has-error': submitted && getForm().password.errors }" (change)="resetError()"/>
               <div *ngIf="submitted && getForm().password.errors" class="invalid-feedback">
                   <p class="form-error" *ngIf="getForm().password.errors.required">Password is required</p>
               </div>
