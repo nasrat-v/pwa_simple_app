@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng build --prod && ng serve --host 0.0.0.0 --disable-host-check --port 4000 --prod=true --ssl",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,7 +11,13 @@
     "compile:server": "webpack --config webpack.server.config.js --progress --colors",
     "serve:ssr": "node dist/server",
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
-    "build:client-and-server-bundles": "ng build --prod && ng run pwaSimpleApp:server:production --bundleDependencies all"
+    "build:client-and-server-bundles": "ng build --prod && ng run pwaSimpleApp:server:production --bundleDependencies all",
+
+
+    "ngsw-config": "node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json",
+    "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js dist/browser",
+    "build-prod-ngsw": "ng build --prod && npm run ngsw-config && npm run ngsw-copy",
+    "serve-prod-ngsw": "npm run build-prod-ngsw && http-server dist/browser -p 4000 -c-1 --ssl -C ssl/server.crt -K ssl/server.key"
   },
   "private": true,
   "dependencies": {

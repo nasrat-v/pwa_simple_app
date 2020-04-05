@@ -5,6 +5,7 @@ import { User, UserCredentials } from '../types/user.type';
 import { ResultServerResponse, UserQueryServerResponse, UserNameQueryServerResponse } from '../types/server-response.type';
 import { TokenStorageService } from '../services/token-storage.service';
 import { UserStorageService } from '../services/user-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class UserService {
 
   public getUserNameById(user_id: string) {
     return new Promise<string>((resolve, reject) => {
-      this.http.get<UserNameQueryServerResponse>("http://127.0.0.1:3000/getUserNameById?user_id=" + user_id).toPromise()
+      this.http.get<UserNameQueryServerResponse>(environment.apiURL + "/getUserNameById?user_id=" + user_id).toPromise()
       .then(res => {
         console.log(res.msg);
         resolve(res.user_name);
@@ -34,7 +35,7 @@ export class UserService {
 
   public createUser(userCreds: UserCredentials) {
     return new Promise<ResultServerResponse>((resolve, reject) => {
-      this.http.post<ResultServerResponse>("http://127.0.0.1:3000/addUser", userCreds)
+      this.http.post<ResultServerResponse>(environment.apiURL + "/addUser", userCreds)
       .toPromise()
       .then(res => {
         console.log(res.msg);
@@ -49,7 +50,7 @@ export class UserService {
 
   public loginUser(userCreds: UserCredentials) {
     return new Promise<UserQueryServerResponse>((resolve, reject) => {
-      this.http.post<UserQueryServerResponse>("http://127.0.0.1:3000/logIn", userCreds)
+      this.http.post<UserQueryServerResponse>(environment.apiURL + "/logIn", userCreds)
       .toPromise()
       .then(res => {
         this.userStorageService.saveUser(res.user);
