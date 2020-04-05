@@ -12,8 +12,6 @@
     "serve:ssr": "node dist/server",
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
     "build:client-and-server-bundles": "ng build --prod && ng run pwaSimpleApp:server:production --bundleDependencies all",
-
-
     "ngsw-config": "node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json",
     "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js dist/browser",
     "build-prod-ngsw": "ng build --prod && npm run ngsw-config && npm run ngsw-copy",

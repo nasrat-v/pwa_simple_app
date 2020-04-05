@@ -48,7 +48,7 @@ function initNotifPayload() {
             "title": "Nouvelle bière",
             "body": "Nous avons reçu une nouvelle bière !",
 			"vibrate": [100, 50, 100],
-			"icon": "assets/icons/appheraut.png",
+			"icon": "assets/icons/appheraut-128x128.png",
             "data": {
                 "dateOfArrival": Date.now(),
                 "primaryKey": 1
