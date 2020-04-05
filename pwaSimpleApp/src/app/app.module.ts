@@ -27,7 +27,7 @@ import { GooglePlaceModule } from "ngx-google-places-autocomplete";
     BrowserModule.withServerTransition({
       appId: 'ng-universal-demystified'
     }),
-    ServiceWorkerModule.register('/ngsw-worker.js', {
+    ServiceWorkerModule.register('/custom-service-worker.js', {
       enabled: environment.production
     }),
     AgmCoreModule.forRoot({

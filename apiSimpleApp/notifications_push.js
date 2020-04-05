@@ -24,13 +24,17 @@ const fakeDatabase = []
 webpush.setVapidDetails('mailto:nicolas.felten@epitech.eu', PUBLIC_VAPID, PRIVATE_VAPID)
 
 function checkForDoublon(subscription) {
-    fakeDatabase.map(sub => {
-        if (sub.userId == subscription.userId) {
-            sub.subscription = subscription.subscription;
-            return (true);
-        }
-    });
-    return (false);
+
+  var index = 0
+  while (index < fakeDatabase.length) {
+    if (fakeDatabase[index].userId == subscription.userId) {
+      fakeDatabase[index].subscription = subscription.subscription;
+      console.log ("return true");
+      return (true);
+    }
+    index = index + 1;
+  }
+  return false;
 }
 
 router.route('/subscription').post(function (req, res) {
@@ -98,6 +102,9 @@ function sendNotification(userId, aperoId) {
           title: 'New Notification',
           body: 'Cliquez sur cette url pour rejoindre l\'apéro : ' + endpointUrl,
           icon: 'assets/icons/icon-512x512.png',
+          data: {
+            url: endpointUrl
+          }
         },
       }    
       //console.log(fakeDatabase);

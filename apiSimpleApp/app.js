@@ -29,12 +29,12 @@ var credentials = {key: privateKey, cert: certificate};
 //var express = require('express'); 
 //var app = express();  
 // your express configuration here  
-var httpServer = http.createServer(app); 
+/*var httpServer = http.createServer(app); 
 var httpsServer = https.createServer(credentials, app);  
 httpServer.listen(8080); 
 httpsServer.listen(3000, () => {
   console.log("listen on port 3000")
-})
+})*/
 
 client.on('connect', function() {
   console.log('connected');
@@ -159,7 +159,7 @@ function notifyUsers(newApero) {
       for (key in users){
         client.hgetall("user:" + users[key], function(err, user) {
           distance = measure(newApero.lat, newApero.lon, user.lat, user.lon)
-          if (distance < 20000) {
+          if (distance < 20000 && newApero.id_host != user.id) {
             console.log("distance ", distance);
             pushNotifRouter.sendNotif(user.id, newApero.id);
             //ici il faut envoyer newAperoId à user 
@@ -188,14 +188,8 @@ app.post("/addApero", (req, res) => {
       "date": req.body.date
     }
     client.hmset("apero:" + id, newApero, function(err, reply) {
-      console.log("error" + err);
-      console.log("reply" + reply)
-      client.hgetall("user:" + req.body.id_host, function(err, reply) {
-        console.log("error" + err);
-        console.log("reply" + reply)
-        client.rpush("aperos_id:" + reply.aperos_id, id, function(err, reply) {
-          console.log("error" + err);
-          console.log("reply" + reply)
+      client.hgetall("user:" + req.body.id_host, function(err, user) {
+        client.rpush("aperos_id:" + user.aperos_id, id, function(err, reply) {
           notifyUsers(newApero);
           return res.send(newApero);
         })
@@ -293,6 +287,6 @@ app.get("/joinApero", (req, res) => {
 
 
 
-/*app.listen(3000, () =>
+app.listen(3000, () =>
   console.log(`Example app listening on port 3000!`)
-);*/
+);
