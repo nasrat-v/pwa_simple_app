@@ -1,6 +1,6 @@
 
 <header>
-      <button class="btn btn-primary dim btn-very-large-dim" type="button" routerLink="/tabs/apero-details">
+      <button class="btn btn-success dim btn-very-large-dim" type="button" routerLink="/tabs/apero-details">
           <i class="fa fa-plus"></i>
           Create a new apero alert !
       </button>
@@ -9,13 +9,13 @@
 
 <content>
    
-<div style="overflow: auto; height: 800px;">
+<div style="overflow-y: auto; overflow-x: hidden; height: 1000px;">
   <div *ngFor="let apero of aperos" style="margin-top: 20px;">
     <div class="row" style="margin-top: 10px;">
       <div class="col-lg-4">
           <div class="ibox" [routerLink]="['/tabs/apero-details', apero.id]">
               <div class="ibox-title">
-                  <span class="label label-primary pull-right" *ngIf="isToday(apero.date)">
+                  <span class="label label-success pull-right" *ngIf="isToday(apero.date)">
                     <i class="fa fa-angellist"></i>
                     TODAY
                   </span>
@@ -29,7 +29,7 @@
                   <p style="margin: 15px;">
                       {{ apero.description }}
                   </p>
-                  <div class="row  m-t-sm" style="margin-top: 20px;">
+                  <div class="row m-t-sm" style="margin-top: 40px;">
                       <div class="col-sm-4">
                           <div class="font-bold">DATE</div>
                           {{ apero.date | date: 'dd/MM/yyyy'}}
@@ -38,7 +38,7 @@
                           <div class="font-bold">FREE SLOTS</div>
                           {{ apero.nb_slots - apero.guests_id.length }}
                       </div>
-                      <div class="col-sm-4 text-right" [routerLink]="['/tabs/map', apero.lat, apero.lon]">
+                      <div class="col-sm-4" [routerLink]="['/tabs/map', apero.lat, apero.lon]">
                           <div class="font-bold">ADDRESS</div>
                           {{ apero.address }} <i class="fa fa-level-up text-navy"></i>
                       </div>

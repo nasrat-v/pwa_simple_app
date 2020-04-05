@@ -122,7 +122,7 @@ app.post('/logIn', (req, res) => {
         res.status(statusUnauthorized).json({"is_success": false, "msg": "Bad password"});
       } else {
         updateDbUserLocation(userDb, creds.user_loc, () => {
-          var token = jwt.sign({'id': creds.id, 'email': creds.email}, secret, { expiresIn: '30m'});
+          var token = jwt.sign({'id': creds.id, 'email': creds.email}, secret, { expiresIn: '60m'});
           var userClient = formatUserDbForClient(userDb);
 
           res.status(statusSuccess).json({
@@ -251,6 +251,7 @@ app.put("/updateApero", (req, res) => {
     "guests_id": parseInt(req.body.guests_id),
     "date": req.body.date
   }
+  console.log(newApero);
   client.hmset("apero:" + req.body.id, newApero, function(err, reply) {
     return res.send(newApero);
   });

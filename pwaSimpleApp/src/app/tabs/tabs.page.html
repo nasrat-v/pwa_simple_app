@@ -59,25 +59,25 @@
 </nav>
   <div class="wrapper-tabs">
     <div class="row border-bottom">
-      <nav class="navbar navbar-static-top" role="navigation">
+      <nav class="navbar navbar-static-top" role="navigation" style="margin-top: 15px;">
           <div class="navbar-header">
-                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary">
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-success">
                     <i class="fa fa-bars"></i>
                 </a>
           </div>
-          <ul class="nav navbar-top-links text-right" style="margin-top: 15px;">
-                <li>
-                    <span class="m-r-sm text-muted welcome-message">Welcome to App-Heraut.</span>
-                </li>
-          </ul>
+          <ul class="nav navbar-top-links navbar-right text-right" style="margin-top: 15px;">
+            <li>
+                <span class="m-r-sm text-muted welcome-message">Welcome to App-Heraut.</span>
+            </li>
+        </ul>
       </nav>
     </div>
-    <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="row wrapper border-bottom white-bg page-heading" style="margin-top: 70px; margin-left: 5px;">
       <div class="col-lg-10">
           <h2>{{ activeTabName }}</h2>
           <ol class="breadcrumb">
               <li>
-                  <a href="index.html">Home</a>
+                  <a>Home</a>
               </li>
               <li class="active" *ngIf="!tabsNavigationStatus.get('home').active">
                   <strong>{{ activeTabName }}</strong>

@@ -12790,7 +12790,7 @@ body.md-skin {
   .btn-very-large-dim {
     width: fit-content;
     height: 60px;
-    font-size: 42px;
+    font-size: 14px;
   }
 
   .beSmaller {
@@ -12808,8 +12808,8 @@ body.md-skin {
   }
   @media (max-width: 420px) {
     .btn-very-large-dim {
-      width: 120px;
+      width: fit-content;
       height: 60px;
-      font-size: 10px;
+      font-size: 6px;
     }
   }

@@ -21,6 +21,7 @@ export class AperoListPage implements OnInit {
     this.aperoService.getAperos().then(
       aperos => {
         this.aperos = aperos;
+        this.aperos[0].guests_id.push("1");
         console.log(this.aperos)
       }
     );
@@ -28,7 +29,6 @@ export class AperoListPage implements OnInit {
 
   public isToday(dateStr: string) {
     var date = new Date(dateStr);
-
     return this.today.getDate() == date.getDate() &&
             this.today.getMonth() == date.getMonth() &&
             this.today.getFullYear() == date.getFullYear();
