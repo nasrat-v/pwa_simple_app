@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomePage {
 
-  public aperos: Apero[];
+  public aperos: Apero[] = null;
   public nbUsers: number;
 
   constructor(private aperoService: AperoService

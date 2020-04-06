@@ -109,16 +109,15 @@ app.get('/getNbUsers', (req, res) => {
 
 app.post('/updateUserInfo', (req, res) => {
   var userBody = req.body;
-
+  console.log(userBody);
   user = {
     'id': userBody.id,
     'aperos_id': userBody.id,
-    'lat': userBody.lat,
-    'lon': userBody.lon,
     'email': userBody.email,
     'user_name': userBody.user_name
   }
   client.hmset("user:" + userBody.id, user, function(err, reply) {
+    console.log(user);
     res.status(statusSuccess).json({"is_success": true, "msg": "User updated", "user": user});
   });
 })
