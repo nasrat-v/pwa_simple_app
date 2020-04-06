@@ -249,7 +249,7 @@ app.get("/getAperos", (req, res) => {
                   console.log("distance ok !!")
                   resolve(apero)
                 }
-                else if (guests_id.includes(user)) {
+                else if (guests_id.includes(user.id)) {
                   resolve(apero)
                 }
                 else
