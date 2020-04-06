@@ -11,7 +11,7 @@ The application is built with:
 The backend is built with:
 - on a Node.js server https://nodejs.org/en/
 - with Redis server for the database https://redis.io/
-- authentication with JWT https://jwt. io/
+- authentication with JWT https://jwt.io/
 - geolocation with Goolge Maps API https://developers.google.com/maps/documentation
 
 ## Cross-platform
