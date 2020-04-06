@@ -93,18 +93,15 @@ router.route('/sendNotification').post(function (req, res) {
           });  
 });*/
 
-function sendNotification(userId, aperoId) {
+function sendNotification(user, apero) {
 
-    console.log("Sending notification to user : ", userId);
-    const endpointUrl = "http://localhost:3000/joinApero?user_id="+userId+"&apero_id="+aperoId;
+    console.log("Sending notification to user : ", user.id);
+    //const endpointUrl = "http://localhost:3000/joinApero?user_id="+userId+"&apero_id="+aperoId;
     const notificationPayload = {
         notification: {
-          title: 'New Notification',
-          body: 'Cliquez sur cette url pour rejoindre l\'apéro : ' + endpointUrl,
-          icon: 'assets/icons/icon-512x512.png',
-          data: {
-            url: endpointUrl
-          }
+          title: 'New apero near your location',
+          body: 'You can join the ' + apero.host_user_name +'\'s apero !',
+          icon: 'assets/icons/appheraut-512x512.png',
         },
       }    
       //console.log(fakeDatabase);
@@ -115,7 +112,7 @@ function sendNotification(userId, aperoId) {
 
       Promise.all(fakeDatabase.map(sub => {
         
-        if (sub.userId == userId) {
+        if (sub.userId == user.id) {
             const pushSubscription = {
                 endpoint: sub.subscription.endpoint,
                 keys: {

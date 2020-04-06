@@ -33,7 +33,7 @@ export class AperoService {
 
    getAperos():Promise<Apero[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<Apero[]>(environment.apiURL + "/getAperos?aperos_id=" + this.userStorageService.getUser().aperos_id).toPromise().then(
+      this.http.get<Apero[]>(environment.apiURL + "/getAperos?user_id=" + this.userStorageService.getUser().id).toPromise().then(
         aperos => {
           aperos.forEach( (apero, AperoIndex) => {
             aperos[AperoIndex].guests_id.forEach ( (guest_id, guestIndex) => {
