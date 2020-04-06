@@ -37,5 +37,6 @@ ng run serve:ssr
 ```
 
 ### Nodejs API
-- [ ] Launch:
-```node index.js```
+```bash
+node index.js
+```
