@@ -114,15 +114,11 @@ export class AperoDetailsPage implements OnInit {
         this.apero.nb_slots = this.apero.nb_slots;
         this.apero.guests_id = this.apero.guests_id;
         this.apero.date = this.apero.date;
-        console.log('avant add apero');
         this.aperoService.addApero(this.apero).then(
           ret => {
-            console.log('apres apero');
-            //this.router.navigateByUrl('tabs/apero-list');
-            window.location.reload();
+            this.router.navigateByUrl('tabs/apero-list');
           });
       }, (err) => {
-        console.log('error apero');
         this.addressError = true;
       });
   }
