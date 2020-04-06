@@ -47,8 +47,7 @@ app.use(expressJWT({ secret: secret})
   .unless(
       { path: [
           '/addUser',
-          '/logIn',
-          '/joinApero'
+          '/logIn'
       ]}
 ));
   
@@ -204,7 +203,7 @@ app.get("/getAperos", (req, res) => {
   aperos = []; 
   client.hgetall("user:" + req.query.user_id, function(err, user) {
     client.lrange("aperos_id" + user.aperos_id, function(err, user_aperos_id) {
-      client.lrange("all_apero_id:", 0, 1, async function(err, all_apero_id) {
+      client.lrange("all_apero_id:", 0, -1, async function(err, all_apero_id) {
         console.log("repl", all_apero_id)
         for (key in all_apero_id) {
           let promise = new Promise((resolve, reject) => {
@@ -212,12 +211,21 @@ app.get("/getAperos", (req, res) => {
   
               client.lrange("guests_id:" + apero.guests_id, 0, -1, function(err, guests_id) {
                 apero.guests_id = guests_id;
-                if (user.id == apero.id_host)
+                console.log("guestid ", guests_id)
+                console.log("on a un apreo", user.id,  " " , apero.id_host);
+
+                if (user.id == apero.id_host) {
+                  console.log("user id ok !!")
                   resolve(apero);
+                } 
                 else if (measure(apero.lat, apero.lon, user.lat, user.lon) < 20000)
+                {
+                  console.log("distance ok !!")
                   resolve(apero)
-                else if (guests_id.includes(user))
+                }
+                else if (guests_id.includes(user)) {
                   resolve(apero)
+                }
                 else
                   resolve (null)
               })
@@ -253,7 +261,6 @@ app.put("/updateApero", (req, res) => {
     "lon": req.body.lon,
     "address": req.body.address,
     "nb_slots": req.body.nb_slots,
-    "guests_id": parseInt(req.body.guests_id),
     "date": req.body.date
   }
   client.hmset("apero:" + req.body.id, newApero, function(err, reply) {
@@ -282,10 +289,14 @@ app.delete("/deleteApero", (req, res) => {
 
 app.get("/joinApero", (req, res) => {
 
+  console.log("user_id", req.query.user_id)
+  console.log("apero_id", req.query.apero_id)
   client.rpush("guests_id:" + req.query.apero_id, req.query.user_id, function(err,rely) { 
     client.hgetall("user:" + req.query.user_id, function(err, user) {
+      //console.log("err" , err)
       client.rpush("aperos_id:" + user.aperos_id, req.query.apero_id, function(err, reply) {
-        return res.send("Vous venez de rejoindre l'apéro. Buvez avec modération");
+        console.log("err", err)
+        return res.send({"response": "Vous venez de rejoindre l'apéro. Buvez avec modération"});
       })
     })
   })

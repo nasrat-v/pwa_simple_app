@@ -105,7 +105,17 @@ export class AperoService {
     });
   }
 
-  joinApero(user_id: string, id: string) {
+  joinApero(user_id: string, apero_id: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.apiURL + "/joinApero?user_id=" + user_id + "&apero_id=" + apero_id).toPromise().then(
+        res => {
+          resolve("OK")
+        },
+        err => {
+          reject(err);
+        }
+      )
+    })
   }
  
   deleteApero(apero: Apero) /*: Promise<void> */{

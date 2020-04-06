@@ -6,6 +6,7 @@ import { UserStorageService } from 'src/app/services/user-storage.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { User } from 'src/app/types/user.type';
 
 declare var $: any;
 
@@ -15,6 +16,8 @@ declare var $: any;
   styleUrls: ['./apero-details.page.scss'],
 })
 export class AperoDetailsPage implements OnInit {
+
+  public user: User;
 
   libelleError = false;
   descriptionError = false;
@@ -51,6 +54,7 @@ export class AperoDetailsPage implements OnInit {
     , private router: Router) { }
 
   ngOnInit() {
+    this.user = this.userStorageService.getUser();
     this.apero.date = new Date();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
