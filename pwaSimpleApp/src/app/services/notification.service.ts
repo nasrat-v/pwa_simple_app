@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-const SUB_URL = 'http://localhost:3000/subscription';
-const GET_NOTIF_URL = 'http://localhost:3000/getNotification';
+import { environment } from 'src/environments/environment';
+
+const SUB_URL = (environment.apiURL + "/subscription");
+const GET_NOTIF_URL = (environment.apiURL + "/getNotification");
 
 @Injectable({
   providedIn: 'root'
