@@ -12813,3 +12813,63 @@ body.md-skin {
       font-size: 6px;
     }
   }
+
+  .scroll-container {
+    overflow-y: scroll; 
+    overflow-x: hidden;
+  }
+  @media (max-height: 570px) { 
+    .scroll-container {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 300px;
+    }
+  }
+  @media (max-height: 670px) and (min-height: 580px) { 
+    .scroll-container {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 400px;
+    }
+  }
+  @media (max-height: 740px) and (min-height: 680px){ 
+    .scroll-container {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 480px;
+    }
+  }
+
+  .scroll-container-large {
+    overflow-y: scroll; 
+    overflow-x: hidden;
+    height: 700px;
+  }
+  @media (max-height: 570px) { 
+    .scroll-container-large {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 300px;
+    }
+  }
+  @media (max-height: 670px) and (min-height: 580px) { 
+    .scroll-container-large {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 400px;
+    }
+  }
+  @media (max-height: 740px) and (min-height: 680px){ 
+    .scroll-container-large {
+      overflow-y: scroll;
+      overflow-x: scroll;
+      height: 480px;
+    }
+  }
+    @media (max-height: 980px) and (min-height: 750px){ 
+      .scroll-container-large {
+        overflow-y: scroll;
+        overflow-x: scroll;
+        height: 650px;
+      }
+  }

@@ -9,13 +9,13 @@
 
 <content>
    
-<div style="overflow-y: auto; overflow-x: hidden; height: 1000px;">
+<div class="scroll-container-large">
   <div *ngFor="let apero of aperos" style="margin-top: 20px;">
     <div class="row" style="margin-top: 10px;">
       <div class="col-lg-4">
           <div class="ibox" [routerLink]="['/tabs/apero-details', apero.id]">
               <div class="ibox-title">
-                  <span class="label label-success pull-right" *ngIf="isToday(apero.date)">
+                  <span class="label label-warning pull-right" *ngIf="isToday(apero.date)">
                     <i class="fa fa-angellist"></i>
                     TODAY
                   </span>
@@ -25,10 +25,19 @@
                   <div class="team-members" *ngFor="let guest of apero.guests_id">
                       <a><img class="img-circle" src="../../../assets/icons/appheraut-128x128.png"></a>
                   </div>
-                  <h4>Info about {{ apero.host_user_name }}'s apero :</h4>
+                  <h4>Info about this apero :</h4>
                   <p style="margin: 15px;">
                       {{ apero.description }}
                   </p>
+                  <div style="margin-top: 40px;">
+                    <span>Address:</span>
+                    <div class="stat-percent" [routerLink]="['/tabs/map', apero.lat, apero.lon]">
+                      {{ apero.address }} <i class="fa fa-level-up text-navy"></i>
+                    </div>
+                    <div class="progress progress-mini progress-striped active m-b-sm">
+                        <div style="width: 100%;" class="progress-bar"></div>
+                    </div>
+                  </div>
                   <div class="row m-t-sm" style="margin-top: 40px;">
                       <div class="col-sm-4">
                           <div class="font-bold">DATE</div>
@@ -38,9 +47,9 @@
                           <div class="font-bold">FREE SLOTS</div>
                           {{ apero.nb_slots - apero.guests_id.length }}
                       </div>
-                      <div class="col-sm-4" [routerLink]="['/tabs/map', apero.lat, apero.lon]">
-                          <div class="font-bold">ADDRESS</div>
-                          {{ apero.address }} <i class="fa fa-level-up text-navy"></i>
+                      <div class="col-sm-4 pull-right">
+                          <div class="font-bold">HOST</div>
+                          {{ apero.host_user_name }}
                       </div>
                   </div>
   
