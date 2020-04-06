@@ -12,6 +12,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor(private tokenStorageService: TokenStorageService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log(req);
     if (!req.url.includes("https://maps.googleapis.com")) {
       const token: string = this.tokenStorageService.getToken();
 
