@@ -63,7 +63,7 @@
       </button>
     </div>
      
-    <div *ngIf="apero.id!==null" style="margin-top: 25px;">
+    <div *ngIf="apero.id!==null && user.id == apero.id" style="margin-top: 25px;">
         <button class="btn btn-danger dim btn-very-large-dim" style="margin-right: 10px;" 
                 type="button" (click)="deleteApero()">
           <i class="fa fa-remove"></i>

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AperoService, Apero } from 'src/app/services/apero.service';
 import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/types/user.type';
+import { UserStorageService } from 'src/app/services/user-storage.service';
 
 @Component({
   selector: 'app-apero-list',
@@ -12,9 +15,12 @@ export class AperoListPage implements OnInit {
 
   public aperos: Apero[];
   public today = new Date();
+  public user: User;
 
   constructor(private aperoService: AperoService
-    , private userService: UserService) {
+    , private userService: UserService
+    , private router: Router
+    , private userStorageService: UserStorageService) {
   }
 
   async ngOnInit() {
@@ -24,6 +30,7 @@ export class AperoListPage implements OnInit {
         console.log(this.aperos)
       }
     );
+    this.user = this.userStorageService.getUser();
   }
 
   public isToday(dateStr: string) {
@@ -47,9 +54,12 @@ export class AperoListPage implements OnInit {
 
   //fonction à utiliser grace aux notification push
   //user_id et apero_id
-  joinApero() {
-    //this.aperoService.joinApero("ITaggEVnWNavtUaFHG9X2dOs6CB2", "XKphGpO6Gb5AiGER4jnT");
-
+  joinApero(user_id, apero_id) {
+    this.aperoService.joinApero(user_id, apero_id).then(
+      ret => {
+        console.log("lala")
+        this.router.navigateByUrl('tabs/apero-details/' + apero_id);
+      });
   }
 
   getPermission() {

@@ -57,6 +57,10 @@
           </div>
         </div>
       </div>
+      <div *ngIf="user.id !== apero.id_host && !apero.guests_id.includes('Me')"> 
+        <button (click)="joinApero(user.id, apero.id)">join apero</button>
+    </div>
+
     </div>
   </div>
 
