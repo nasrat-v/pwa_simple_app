@@ -36,7 +36,7 @@ To open the app (on project root folder):
 ng run serve:ssr
 ```
 
-### Nodejs API
+### Node.js API
 ```bash
 node index.js
 ```
