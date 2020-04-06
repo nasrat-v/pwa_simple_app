@@ -57,8 +57,8 @@ export class AperoListPage implements OnInit {
   joinApero(user_id, apero_id) {
     this.aperoService.joinApero(user_id, apero_id).then(
       ret => {
-        console.log("lala")
-        this.router.navigateByUrl('tabs/apero-details/' + apero_id);
+        window.location.reload();
+        //this.router.navigateByUrl('tabs/apero-details/' + apero_id);
       });
   }
 
