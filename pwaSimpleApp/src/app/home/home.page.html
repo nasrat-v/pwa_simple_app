@@ -5,4 +5,40 @@
 </header>
 
 <content>
+  <div class="scroll-container">
+  <div class="col-lg-4">
+    <div class="widget blue-bg no-padding">
+        <div class="p-m">
+            <div class="pull-right">
+              <i class="fa fa-thumbs-up fa-3x"></i>
+            </div>
+            <h1 class="m-xs">{{ aperos.length }}</h1>
+            <h3 class="font-bold no-margins">
+                Aperos posted
+            </h3>
+            <small>A lot of new aperos are posted by the community. Check this out !</small>
+        </div>
+        <div class="flot-chart">
+            <div class="flot-chart-content" id="flot-chart1"></div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3">
+  <div class="widget lazur-bg no-padding">
+      <div class="p-m">
+         <div class="pull-right">
+            <i class="fa fa-user fa-3x"></i>
+          </div>
+          <h1 class="m-xs">{{ nbUsers }}</h1>
+          <h3 class="font-bold no-margins">
+              Active users
+          </h3>
+          <small>Our community grows every day. Join us !</small>
+      </div>
+      <div class="flot-chart">
+          <div class="flot-chart-content" id="flot-chart2"></div>
+      </div>
+  </div>
+</div>
+</div>
 </content>

@@ -5,11 +5,17 @@ export interface ResultServerResponse {
     msg: string
 };
 
-export interface UserQueryServerResponse {
+export interface UserAuthServerResponse {
     is_success: boolean,
     msg: string,
     user: User,
     user_auth: UserAuthentication
+};
+
+export interface UserInfoServerResponse {
+    is_success: boolean,
+    msg: string,
+    user: User
 };
 
 export interface UserNameQueryServerResponse {

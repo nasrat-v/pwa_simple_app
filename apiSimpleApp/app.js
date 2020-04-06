@@ -97,6 +97,33 @@ function addUser(userBody, callback) {
   });
 }
 
+app.get('/getNbUsers', (req, res) => {
+  var nb = 0;
+
+  client.hgetall("users:", function(err, users) {
+    for (key in users){
+      nb += 1;
+    }
+    res.status(statusSuccess).json({"is_success": true, "msg": nb});
+  });
+});
+
+app.post('/updateUserInfo', (req, res) => {
+  var userBody = req.body;
+
+  user = {
+    'id': userBody.id,
+    'aperos_id': userBody.id,
+    'lat': userBody.lat,
+    'lon': userBody.lon,
+    'email': userBody.email,
+    'user_name': userBody.user_name
+  }
+  client.hmset("user:" + userBody.id, user, function(err, reply) {
+    res.status(statusSuccess).json({"is_success": true, "msg": "User updated", "user": user});
+  });
+})
+
 app.post('/addUser', (req, res) => {
   var userBody = req.body;
 

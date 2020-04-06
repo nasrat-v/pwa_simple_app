@@ -1,8 +1,20 @@
-<header>
-  <title>
-    Settings
-  </title>
-</header>
+<header >
+  <title>Settings</title>
+</header>   
 
 <content>
+  <div class="scroll-container">
+  <div class="form-group" style="max-width: 300px;">
+    <label for="username">Username</label>
+    <input id="username" class="form-control" type="text" [(ngModel)]="userName" 
+            placeholder="Enter your new username">
+  </div>
+
+  <div style="margin-top: 25px;">
+    <button class="btn btn-success dim btn-very-large-dim" type="button" (click)="saveChanges()">
+      <i class="fa fa-check"></i>
+      Save changes
+    </button>
+  </div>
+  </div>
 </content>
